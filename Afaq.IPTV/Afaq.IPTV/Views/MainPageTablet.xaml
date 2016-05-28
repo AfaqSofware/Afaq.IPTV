@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:views="clr-namespace:Afaq.IPTV.Views;assembly=Afaq.IPTV"
+                  xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+                  prism:ViewModelLocator.AutowireViewModel="True"
+                  x:Class="Afaq.IPTV.Views.MainPageTablet" MasterBehavior="Popover">
+    <MasterDetailPage.Master>
+        <views:ChannelsPage Icon="icon.png" />
+
+
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <views:VideoPage />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

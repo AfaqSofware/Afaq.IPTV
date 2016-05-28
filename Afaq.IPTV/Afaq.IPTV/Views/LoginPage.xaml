@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Afaq.IPTV.Views.LoginPage">
+
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Frame OutlineColor="Silver" Padding="20">
+
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Username:" VerticalOptions="Center" />
+                    <Entry Text="{Binding Username}" Placeholder="Enter Username" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Password:" VerticalOptions="Center" />
+                    <Entry Text="{Binding Password}" Placeholder="Enter Password" IsPassword="True" />
+                </StackLayout>
+
+                <StackLayout>
+                    <Button Text="Login" Command="{Binding LoginCommand}" />
+                </StackLayout>
+            </StackLayout>
+
+        </Frame>
+        <StackLayout IsVisible="{Binding HasStatus}">
+            <Label Text="{Binding StatusMessage}" />
+        </StackLayout>
+        <StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsSigningIn}" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

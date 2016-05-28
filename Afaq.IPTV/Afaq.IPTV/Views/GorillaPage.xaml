@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:common="clr-namespace:UXDivers.Artina.Player;assembly=UXDivers.Artina.Player.Common"
+             x:Class="Afaq.IPTV.Views.GorillaPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <common:JsonData x:Key="People">
+                [{
+                "Name": "MBC1",
+                "Id": "1",
+                "Sources": [{
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/71.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/x90jsg38j/MBC_1.png",
+                "CurrentSource": {
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/71.ts",
+                "Quality": 1
+                }
+                },
+                {
+                "Name": "MBC2",
+                "Id": "2",
+                "Sources": [{
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/72.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/5mxs7rjvn/MBC_2.png",
+                "CurrentSource": {
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/72.ts",
+                "Quality": 1
+                }
+                },
+                {
+                "Name": "Bein Sport 1",
+                "Id": "3",
+                "Sources": [{
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/1.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/4ylb1d65f/Bein_Sport1.jpg",
+                "CurrentSource": {
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/1.ts",
+                "Quality": 1
+                }
+                },
+                {
+                "Name": "Bein Sport 2",
+                "Id": "4",
+                "Sources": [{
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/2.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/4ahifjdr7/Bein_Sport2.png",
+                "CurrentSource": {
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/2.ts",
+                "Quality": 1
+                }
+                },
+                {
+                "Name": "Bein Sport 3",
+                "Id": "5",
+                "Sources": [{
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/3.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/ovwa7fvc3/Bein_Sport3.png",
+                "CurrentSource": {
+                "VideoSource": "http://star.010e.net:8000/live/ahmedmadi/123456/3.ts",
+                "Quality": 1
+                }
+                },
+                {
+                "Name": "Aljazeera News - Arabic",
+                "Id": "6",
+                "Sources": [{
+                "VideoSource": "http://sat.010e.net:8000/live/ahmedmadi/123456/215.ts",
+                "Quality": 1
+                }],
+                "Logo": "http://s19.postimg.org/497km4bxf/Aljazeera_News.png",
+                "CurrentSource": {
+                "VideoSource": "http://sat.010e.net:8000/live/ahmedmadi/123456/215.ts",
+                "Quality": 1
+                }
+                }]
+            </common:JsonData>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="Channels" />
+            <ColumnDefinition x:Name="Content" Width="4*" />
+        </Grid.ColumnDefinitions>
+        <StackLayout Grid.Column="0" Grid.ColumnSpan="2">
+            <!--<Image Source="http://s19.postimg.org/497km4bxf/Aljazeera_News.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>-->
+            <Frame BackgroundColor="Fuchsia" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+        </StackLayout>
+        <StackLayout Grid.Column="0" BackgroundColor="Black" Opacity="0.7" IsVisible="True">
+            <Entry Placeholder="Search Channel" />
+            <ListView ItemsSource="{Binding Source={StaticResource People}, Path=Obj}" HasUnevenRows="False"
+                      RowHeight="70">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" Detail="HD" />
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+    </Grid>
+
+</ContentPage>
