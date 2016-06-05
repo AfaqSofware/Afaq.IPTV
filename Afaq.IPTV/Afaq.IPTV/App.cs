@@ -6,7 +6,9 @@ using Afaq.IPTV.Services;
 using Afaq.IPTV.ViewModels;
 using Afaq.IPTV.Views;
 using Microsoft.Practices.Unity;
+using Prism;
 using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Unity;
 using Xamarin.Forms;
 
@@ -43,8 +45,12 @@ namespace Afaq.IPTV
         {
             Container.RegisterType<IAuthenticationService, AuthenticationService>();
             Container.RegisterType<IChannelService, M3UChannelService>();
+           
+            //Container.RegisterInstance(NavigationService, new ContainerControlledLifetimeManager());
+            //Container.RegisterType<IVideoPageViewModel, VideoPageViewModel>(new ContainerControlledLifetimeManager());
+            //Container.RegisterType<IMainPagePhoneViewModel, MainPagePhoneViewModel>(
+            //    new ContainerControlledLifetimeManager());
 
-            Container.RegisterTypeForNavigation<ChannelsPage>();
             Container.RegisterTypeForNavigation<VideoPage>();
             Container.RegisterTypeForNavigation<LoginPage>();
 
@@ -52,7 +58,7 @@ namespace Afaq.IPTV
             if (Device.Idiom == TargetIdiom.Phone) {
                 Container.RegisterTypeForNavigation<MainPagePhone>("MainPage");
             } else {
-                Container.RegisterTypeForNavigation<MainPageTablet2>("MainPage");
+                Container.RegisterTypeForNavigation<MainPagePhone>("MainPage");
             }
 
 

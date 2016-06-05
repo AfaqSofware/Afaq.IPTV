@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
-    public class VideoPageViewModel : BindableBase, INavigationAware
+    public class VideoPageViewModel : BindableBase, INavigationAware, IVideoPageViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private string _videoSource;
@@ -16,7 +16,7 @@ namespace Afaq.IPTV.ViewModels
         public VideoPageViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            eventAggregator.GetEvent<BackButtonPressed>().Subscribe(OnBackButtonPressed);
+
             MessagingCenter.Subscribe<MainPagePhoneViewModel, Channel>(this, "ChannelChanged", OnChannelChanged);
         }
 
@@ -44,16 +44,13 @@ namespace Afaq.IPTV.ViewModels
                 _eventAggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = false });
             }
 
-            if (parameters.ContainsKey("channel"))
-            {
+            if (parameters.ContainsKey("channel")) {
                 var sourceUrl = ((Channel)parameters["channel"]).CurrentSource.VideoSource;
-                VideoSource = ((Channel) parameters["channel"]).CurrentSource.VideoSource.ToString();
+                VideoSource = ((Channel)parameters["channel"]).CurrentSource.VideoSource.ToString();
             }
         }
 
-        private void OnBackButtonPressed(object obj)
-        {
-        }
+
 
         private void OnChannelChanged(MainPagePhoneViewModel arg1, Channel newChannel)
         {

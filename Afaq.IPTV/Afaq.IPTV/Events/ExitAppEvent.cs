@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Octane.Xam.VideoPlayer;
+using Prism.Events;
 
-namespace Afaq.IPTV.Controls
+namespace Afaq.IPTV.Events
 {
-    public class EventlessVideoPlayer:VideoPlayer
+    public class ExitAppEvent:PubSubEvent<object>
     {
-      
     }
 }

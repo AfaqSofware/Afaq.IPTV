@@ -5,6 +5,7 @@ namespace Afaq.IPTV.Models
 {
     public class Channel
     {
+        public string Group { get; set; }
         public string Name { get; set; }
         public string Id { get; set; }
         public List<Source> Sources { get; set; }

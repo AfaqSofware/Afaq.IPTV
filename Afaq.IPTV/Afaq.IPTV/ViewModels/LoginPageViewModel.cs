@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Linq;
+using Afaq.IPTV.Models;
 using Afaq.IPTV.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Realms;
 using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
     public class LoginPageViewModel : BindableBase
     {
-        private const string StrPassword = "Password";
-        private const string StrUsername = "Username";
         private const string StrChannels = "channels";
 
+        private readonly Realm _realm;
         private readonly IAuthenticationService _authenticationService;
         private readonly INavigationService _navigationService;
         private bool _isSigningIn;
@@ -24,16 +26,18 @@ namespace Afaq.IPTV.ViewModels
         {
             _navigationService = navigationService;
             _authenticationService = authenticationService;
-            LoginCommand = new DelegateCommand(Login, CanExecuteLogin);
-            Password = "123456";
-            Username = "ahmedmadi";
-            if (Application.Current.Properties.ContainsKey(StrPassword))
-            {
-               // Password = (string)Application.Current.Properties[StrPassword];
-            }
+            LoginCommand = new DelegateCommand(Login,
+                () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password));
+            _realm = Realm.GetInstance();
 
-            if (Application.Current.Properties.ContainsKey(StrUsername)) {
-                //Username = (string)Application.Current.Properties[StrUsername];
+            if (_realm.All<Credentials>().ToList().Any())
+            {
+                var credentials = _realm.All<Credentials>().ToList().First();
+                if (credentials != null)
+                {
+                    Password = credentials.Password;
+                    Username = credentials.Username;
+                }
             }
         }
 
@@ -83,22 +87,25 @@ namespace Afaq.IPTV.ViewModels
         public DelegateCommand LoginCommand { get; set; }
 
 
-        private bool CanExecuteLogin()
-        {
-            return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
-        }
-
         private async void Login()
         {
             IsSigningIn = true;
             var loginResult = await _authenticationService.GetRequestAsync(Username, Password);
             IsSigningIn = false;
-            switch (loginResult.LoginStatus) {
+            switch (loginResult.LoginStatus)
+            {
                 case LoginStatus.Successful:
-                    Application.Current.Properties[StrPassword] = Password;
-                    Application.Current.Properties[StrUsername] = Username;
+
+                    _realm.Write(() =>
+                    {
+                        var entry = _realm.CreateObject<Credentials>();
+                        entry.Password = Password;
+                        entry.Username = Username;
+                    });
+
+
                     var channels = loginResult.Channels;
-                    var parameters = new NavigationParameters { { StrChannels, channels } };
+                    var parameters = new NavigationParameters {{StrChannels, channels}};
                     await _navigationService.NavigateAsync("MainPage", parameters);
 
                     break;

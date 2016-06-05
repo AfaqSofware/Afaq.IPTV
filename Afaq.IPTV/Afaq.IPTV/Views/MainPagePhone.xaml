@@ -5,6 +5,25 @@
             xmlns:views="clr-namespace:Afaq.IPTV.Views;assembly=Afaq.IPTV"
             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
             prism:ViewModelLocator.AutowireViewModel="True"
-            x:Class="Afaq.IPTV.Views.MainPagePhone">
-    <views:ChannelsPage />
+            x:Class="Afaq.IPTV.Views.MainPagePhone"
+            ItemsSource="{Binding ChannelLists}" Appearing="MainPagePhone_OnAppearing" >
+  
+  <TabbedPage.ItemTemplate>
+    <DataTemplate>
+      <ContentPage Title="{Binding Name}">
+        <StackLayout>
+          <Entry Placeholder="Search Channel" Text="{Binding SearchKey, Mode=TwoWay}" />
+          <ListView x:Name="MyChannelList"  ItemSelected="MyChannelList_OnItemSelected" ItemsSource="{Binding Channels, Mode=TwoWay}"
+                   ItemTapped="ChannelList_OnItemTapped"  SelectedItem="{Binding CurrentChannel, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}"  />
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </StackLayout>
+      </ContentPage>
+    </DataTemplate>
+  </TabbedPage.ItemTemplate>
+  
 </TabbedPage>
