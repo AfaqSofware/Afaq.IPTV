@@ -4,13 +4,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:videoPlayer1="clr-namespace:Xam.Plugins.VideoPlayer;assembly=Xam.Plugins.VideoPlayer"
+             xmlns:abstractions="clr-namespace:CrossVideoPlayer.FormsPlugin.Abstractions;assembly=Afaq.IPTV"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="Afaq.IPTV.Views.VideoPage" Title="Detail">
+             x:Class="Afaq.IPTV.Views.VideoPage" Title="Detail" Disappearing="VideoPage_OnDisappearing">
 
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
                     iOS="0, 20, 0, 0" />
     </ContentPage.Padding>
-    <videoPlayer1:VideoPlayer x:Name="VideoPlayer" AutoPlay="True" VideoSource="{Binding VideoSource}" />
-
+    <!--<videoPlayer1:VideoPlayer x:Name="VideoPlayer" AutoPlay="True" VideoSource="{Binding VideoSource}" />-->
+   <abstractions:CrossVideoPlayerView x:Name="VideoPlayer" VideoSource="{Binding VideoSource}"/>
 </ContentPage>

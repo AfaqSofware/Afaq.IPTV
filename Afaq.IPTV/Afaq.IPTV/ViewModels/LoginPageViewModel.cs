@@ -28,17 +28,16 @@ namespace Afaq.IPTV.ViewModels
             _authenticationService = authenticationService;
             LoginCommand = new DelegateCommand(Login,
                 () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password));
+
+
             _realm = Realm.GetInstance();
 
-            if (_realm.All<Credentials>().ToList().Any())
-            {
-                var credentials = _realm.All<Credentials>().ToList().First();
-                if (credentials != null)
-                {
-                    Password = credentials.Password;
-                    Username = credentials.Username;
-                }
-            }
+            if (!_realm.All<Credentials>().ToList().Any()) return;
+            var credentials = _realm.All<Credentials>().ToList().First();
+            if (credentials == null) return;
+
+            Password = credentials.Password;
+            Username = credentials.Username;
         }
 
         public bool IsSigningIn
@@ -95,7 +94,17 @@ namespace Afaq.IPTV.ViewModels
             switch (loginResult.LoginStatus)
             {
                 case LoginStatus.Successful:
-
+                    var usrname = Username;
+                    var credentials = _realm.All<Credentials>().Where(d => d.Username == usrname).ToList();
+      
+                    foreach (var credential in credentials)
+                    {
+                        using (var trans = _realm.BeginWrite()) {
+                            _realm.Remove(credential);
+                            trans.Commit();
+                        }
+                    }
+                
                     _realm.Write(() =>
                     {
                         var entry = _realm.CreateObject<Credentials>();

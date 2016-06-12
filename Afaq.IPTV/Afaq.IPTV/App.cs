@@ -48,7 +48,7 @@ namespace Afaq.IPTV
            
             //Container.RegisterInstance(NavigationService, new ContainerControlledLifetimeManager());
             //Container.RegisterType<IVideoPageViewModel, VideoPageViewModel>(new ContainerControlledLifetimeManager());
-            //Container.RegisterType<IMainPagePhoneViewModel, MainPagePhoneViewModel>(
+            //Container.RegisterType<IMainPagePhoneViewModel, MainPageViewModel>(
             //    new ContainerControlledLifetimeManager());
 
             Container.RegisterTypeForNavigation<VideoPage>();
@@ -56,9 +56,9 @@ namespace Afaq.IPTV
 
 
             if (Device.Idiom == TargetIdiom.Phone) {
-                Container.RegisterTypeForNavigation<MainPagePhone>("MainPage");
+                Container.RegisterTypeForNavigation<MainPage>("MainPage");
             } else {
-                Container.RegisterTypeForNavigation<MainPagePhone>("MainPage");
+                Container.RegisterTypeForNavigation<MainPage>("MainPage");
             }
 
 

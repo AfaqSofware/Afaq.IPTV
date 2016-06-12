@@ -5,8 +5,8 @@
             xmlns:views="clr-namespace:Afaq.IPTV.Views;assembly=Afaq.IPTV"
             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
             prism:ViewModelLocator.AutowireViewModel="True"
-            x:Class="Afaq.IPTV.Views.MainPagePhone"
-            ItemsSource="{Binding ChannelLists}" Appearing="MainPagePhone_OnAppearing" >
+            x:Class="Afaq.IPTV.Views.MainPage"
+            ItemsSource="{Binding ChannelLists}" Appearing="MainPage_OnAppearing" >
   
   <TabbedPage.ItemTemplate>
     <DataTemplate>

@@ -17,7 +17,7 @@ namespace Afaq.IPTV.ViewModels
         {
             _eventAggregator = eventAggregator;
 
-            MessagingCenter.Subscribe<MainPagePhoneViewModel, Channel>(this, "ChannelChanged", OnChannelChanged);
+            MessagingCenter.Subscribe<MainPageViewModel, Channel>(this, "ChannelChanged", OnChannelChanged);
         }
 
         public string VideoSource
@@ -52,7 +52,7 @@ namespace Afaq.IPTV.ViewModels
 
 
 
-        private void OnChannelChanged(MainPagePhoneViewModel arg1, Channel newChannel)
+        private void OnChannelChanged(MainPageViewModel arg1, Channel newChannel)
         {
             VideoSource = newChannel.CurrentSource.VideoSource.ToString();
         }
