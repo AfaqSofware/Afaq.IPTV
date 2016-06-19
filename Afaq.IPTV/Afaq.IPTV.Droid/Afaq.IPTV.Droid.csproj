@@ -86,6 +86,14 @@
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="Octane.Xam.VideoPlayer, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Octane.Xam.VideoPlayer.1.1.4.0\lib\MonoAndroid10\Octane.Xam.VideoPlayer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Octane.Xam.VideoPlayer.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Octane.Xam.VideoPlayer.1.1.4.0\lib\MonoAndroid10\Octane.Xam.VideoPlayer.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Prism, Version=6.1.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Core.6.1.0\lib\MonoAndroid10\Prism.dll</HintPath>
       <Private>True</Private>
@@ -113,12 +121,32 @@
     <Reference Include="UXDivers.Artina.Player.Common.Droid">
       <HintPath>..\..\Lib\UXDivers.Artina.Player.Common.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="Xam.Plugins.VideoPlayer, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.VideoPlayer.1.0.0-pre07\lib\monoandroid\Xam.Plugins.VideoPlayer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xam.Plugins.VideoPlayer.Droid, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.VideoPlayer.1.0.0-pre07\lib\monoandroid\Xam.Plugins.VideoPlayer.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Design, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Android.Support.Design.23.3.0\lib\MonoAndroid43\Xamarin.Android.Support.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v14.Preference, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v14.Preference.23.3.0\lib\MonoAndroid41\Xamarin.Android.Support.v14.Preference.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v17.Leanback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v17.Leanback.23.3.0\lib\MonoAndroid50\Xamarin.Android.Support.v17.Leanback.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v17.Preference.Leanback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v17.Preference.Leanback.23.3.0\lib\MonoAndroid50\Xamarin.Android.Support.v17.Preference.Leanback.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -135,6 +163,10 @@
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Android.Support.v7.MediaRouter.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.Preference, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v7.Preference.23.3.0\lib\MonoAndroid41\Xamarin.Android.Support.v7.Preference.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.RecyclerView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -164,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrossVideoPlayer\CrossVideoPlayerView.cs" />
+    <Compile Include="CustomRenderers\ChannelPreviewerCustomRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Player\DashRendererBuilder.cs" />
     <Compile Include="Player\ExtractorRendererBuilder.cs" />
@@ -178,6 +211,7 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+    <None Include="Xam.Plugins.VideoPlayer.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

@@ -1,11 +1,9 @@
-﻿using System;
-using Afaq.IPTV.Events;
+﻿using Afaq.IPTV.Events;
 using Afaq.IPTV.Helpers;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
-using Android.Widget;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Xamarin.Forms;
@@ -15,11 +13,10 @@ namespace Afaq.IPTV.Droid
 {
     [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [IntentFilter(new[] {"android.intent.action.MAIN"}, AutoVerify = true,
+        Categories = new[] {"android.intent.category.LEANBACK_LAUNCHER"})]
     public class MainActivity : FormsApplicationActivity
     {
-
-
-
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
 
@@ -56,10 +53,10 @@ namespace Afaq.IPTV.Droid
         }
 
 
-
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (e.KeyCode) {
+            switch (e.KeyCode)
+            {
                 case Keycode.DpadUp:
                     MessagingCenter.Send<object>(this, Constants.MoveUp);
                     break;
@@ -244,9 +241,8 @@ namespace Afaq.IPTV.Droid
                     //toast.Show();
                     break;
             }
-            return base.OnKeyDown(keyCode, e); ;
+            return base.OnKeyDown(keyCode, e);
+            ;
         }
-
-
     }
 }

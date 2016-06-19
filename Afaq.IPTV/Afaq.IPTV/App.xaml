@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<unity:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:unity="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             xmlns:themes="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Dark"
+             x:Class="Afaq.IPTV.App">
+  
+  <Application.Resources>
+    <ResourceDictionary MergedWith="themes:DarkThemeResources" />
+  </Application.Resources>
+</unity:PrismApplication>

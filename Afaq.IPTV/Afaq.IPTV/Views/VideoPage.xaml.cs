@@ -16,5 +16,6 @@ namespace Afaq.IPTV.Views
         {
             MessagingCenter.Send<object, bool>(this,Constants.ReleasePlayer, true);
         }
+
     }
 }

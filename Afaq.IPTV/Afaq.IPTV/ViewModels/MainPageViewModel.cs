@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
-    public class MainPageViewModel : BindableBase, INavigationAware, IMainPagePhoneViewModel
+    public class MainPageViewModel : BindableBase, INavigationAware
     {
         private readonly IChannelService _channelService;
         private readonly IEventAggregator _eventAggregator;

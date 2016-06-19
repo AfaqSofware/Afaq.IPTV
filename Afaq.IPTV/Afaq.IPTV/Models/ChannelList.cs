@@ -17,6 +17,7 @@ namespace Afaq.IPTV.Models
         private string _name;
         private string _searchKey;
         private readonly ChannelListHelper _channelListHelper;
+        private string _currentVideoSource;
 
         #endregion
 
@@ -42,6 +43,17 @@ namespace Afaq.IPTV.Models
             {
                 if (Equals(value, _currentChannel)) return;
                 _currentChannel = value;
+                CurrentVideoSource = value.CurrentSource.VideoSource.ToString();
+                OnPropertyChanged();
+            }
+        }
+
+        public string CurrentVideoSource
+        {
+            get { return _currentVideoSource; }
+            set
+            {
+                _currentVideoSource = value;
                 OnPropertyChanged();
             }
         }

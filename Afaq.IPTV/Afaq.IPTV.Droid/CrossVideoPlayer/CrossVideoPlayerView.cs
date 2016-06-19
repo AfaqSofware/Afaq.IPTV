@@ -48,9 +48,15 @@ namespace CrossVideoPlayer.FormsPlugin.Droid
                 var metrics = Resources.DisplayMetrics;
 
                 crossVideoPlayerView.HeightRequest = metrics.WidthPixels / metrics.Density / crossVideoPlayerView.VideoScale;
-              
-              
+
+                //crossVideoPlayerView.Release += OnRelease;
+
             }
+        }
+
+        private void OnRelease(object sender, EventArgs e)
+        {
+            _player.Release();
         }
 
         protected override void Dispose(bool disposing)

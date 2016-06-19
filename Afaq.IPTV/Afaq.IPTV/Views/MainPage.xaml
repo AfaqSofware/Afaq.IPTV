@@ -4,26 +4,50 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:views="clr-namespace:Afaq.IPTV.Views;assembly=Afaq.IPTV"
             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+            xmlns:videoPlayer="clr-namespace:Xam.Plugins.VideoPlayer;assembly=Xam.Plugins.VideoPlayer"
+            xmlns:controls="clr-namespace:Afaq.IPTV.Controls;assembly=Afaq.IPTV"
             prism:ViewModelLocator.AutowireViewModel="True"
             x:Class="Afaq.IPTV.Views.MainPage"
-            ItemsSource="{Binding ChannelLists}" Appearing="MainPage_OnAppearing" >
-  
-  <TabbedPage.ItemTemplate>
-    <DataTemplate>
-      <ContentPage Title="{Binding Name}">
-        <StackLayout>
-          <Entry Placeholder="Search Channel" Text="{Binding SearchKey, Mode=TwoWay}" />
-          <ListView x:Name="MyChannelList"  ItemSelected="MyChannelList_OnItemSelected" ItemsSource="{Binding Channels, Mode=TwoWay}"
-                   ItemTapped="ChannelList_OnItemTapped"  SelectedItem="{Binding CurrentChannel, Mode=TwoWay}">
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}"  />
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-        </StackLayout>
-      </ContentPage>
-    </DataTemplate>
-  </TabbedPage.ItemTemplate>
-  
+            ItemsSource="{Binding ChannelLists}" Appearing="MainPage_OnAppearing" Disappearing="MainPage_OnDisappearing">
+
+    <TabbedPage.ItemTemplate>
+        <DataTemplate>
+            <ContentPage Title="{Binding Name}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                  
+                    <StackLayout BackgroundColor="Black" Grid.Column="0">
+                        <Entry Placeholder="Search Channel" Text="{Binding SearchKey, Mode=TwoWay}" />
+                        <ListView x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
+                                  ItemsSource="{Binding Channels, Mode=TwoWay}"
+                                  ItemTapped="ChannelList_OnItemTapped"
+                                  SelectedItem="{Binding CurrentChannel, Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+
+                  <Grid  Grid.Column="1">
+                    <Grid.RowDefinitions>
+                      <RowDefinition/>
+                      <RowDefinition/>
+                      <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Frame x:Name="VideoFrame" OutlineColor="Aqua" BackgroundColor="Black" Padding="1" Grid.Row="1">
+                      <controls:ChannelPreviewer AutoPlay="True" PropertyChanged="BindableObject_OnPropertyChanged" VideoSource="{Binding CurrentVideoSource, Mode=TwoWay}" />
+                    </Frame>
+                  </Grid>
+
+                </Grid>
+
+            </ContentPage>
+        </DataTemplate>
+    </TabbedPage.ItemTemplate>
+
 </TabbedPage>

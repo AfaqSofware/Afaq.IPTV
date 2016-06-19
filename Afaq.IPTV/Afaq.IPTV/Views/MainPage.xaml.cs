@@ -23,6 +23,7 @@ namespace Afaq.IPTV.Views
 
             MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
             _viewModel = (MainPageViewModel) BindingContext;
+            
         }
 
         private void OnMoveRight(object obj)
@@ -125,6 +126,17 @@ namespace Afaq.IPTV.Views
         private void MainPage_OnAppearing(object sender, EventArgs e)
         {
             _viewModel.SetScreenOrientation();
+            MessagingCenter.Send<object>(this, "ShowPreviewer");
+        }
+
+        private void BindableObject_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var x = e.PropertyName; 
+        }
+
+        private void MainPage_OnDisappearing(object sender, EventArgs e)
+        {
+            MessagingCenter.Send<object>(this, "ReleasePreviewer");
         }
     }
 }

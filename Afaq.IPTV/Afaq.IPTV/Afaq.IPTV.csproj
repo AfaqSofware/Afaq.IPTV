@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\ChannelPreviewer.cs" />
     <Compile Include="CrossVideoPlayer\CrossVideoPlayerView.cs" />
     <Compile Include="Events\BackButtonPressed.cs" />
     <Compile Include="App.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IChannelService.cs" />
     <Compile Include="Services\M3UChannelService.cs" />
-    <Compile Include="ViewModels\IMainPagePhoneViewModel.cs" />
     <Compile Include="ViewModels\IVideoPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
@@ -87,6 +87,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1-beta1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Octane.Xam.VideoPlayer, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Octane.Xam.VideoPlayer.1.1.4.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Octane.Xam.VideoPlayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PlaylistSharpLib">
@@ -153,9 +157,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
