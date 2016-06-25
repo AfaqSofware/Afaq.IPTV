@@ -5,7 +5,7 @@ namespace Afaq.IPTV.Models
 {
     public struct Source
     {
-        public Uri VideoSource;
+        public string VideoSource;
         public DefinitionQuality Quality;
     }
 }

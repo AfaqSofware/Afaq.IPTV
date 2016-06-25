@@ -41,7 +41,7 @@ namespace Afaq.IPTV.Services
             {
                 var channel = new Channel
                 {
-                    CurrentSource = new Source {VideoSource = new Uri(playlistTrack.Location)},
+                    CurrentSource = new Source {VideoSource = playlistTrack.Location},
                     Name = $"{playlistTrack.Information.Id}. {playlistTrack.Information.Title}" ,
                     Id = playlistTrack.Information.Id,
                     Group = playlistTrack.Information.Group
@@ -66,7 +66,7 @@ namespace Afaq.IPTV.Services
 
             #endregion
 
-        //    _channelLists.Add(favouriteChannelList);
+           // _channelLists.Add(favouriteChannelList);
             _channelLists.Add(allChanelsList);
 
             foreach (var channelList in channelLists)
@@ -89,7 +89,10 @@ namespace Afaq.IPTV.Services
                     });
                 }
             }
-            _channelLists.Add(otherChannelsList);
+            if (otherChannelsList.Channels.Any())
+            {
+                _channelLists.Add(otherChannelsList);
+            }
 
             return _channelLists;
         }

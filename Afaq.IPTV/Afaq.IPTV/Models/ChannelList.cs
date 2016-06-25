@@ -43,7 +43,7 @@ namespace Afaq.IPTV.Models
             {
                 if (Equals(value, _currentChannel)) return;
                 _currentChannel = value;
-                CurrentVideoSource = value.CurrentSource.VideoSource.ToString();
+                CurrentVideoSource = value.CurrentSource.VideoSource;
                 OnPropertyChanged();
             }
         }

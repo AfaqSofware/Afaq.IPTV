@@ -45,7 +45,6 @@ namespace Afaq.IPTV.ViewModels
             }
 
             if (parameters.ContainsKey("channel")) {
-                var sourceUrl = ((Channel)parameters["channel"]).CurrentSource.VideoSource;
                 VideoSource = ((Channel)parameters["channel"]).CurrentSource.VideoSource.ToString();
             }
         }

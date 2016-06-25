@@ -25,13 +25,14 @@ namespace Afaq.IPTV.ViewModels
         private string _password;
         private string _statusMessage;
         private string _username;
+        private bool _canLogin;
 
+        public event EventHandler LoginSucceeded;
         public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
         {
             _navigationService = navigationService;
             _authenticationService = authenticationService;
-            LoginCommand = new DelegateCommand(Login,
-                () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password));
+            LoginCommand = new DelegateCommand(Login, () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && CanLogin);
             _realm = Realm.GetInstance();
             if (!_realm.All<Credentials>().ToList().Any()) return;
             var credentials = _realm.All<Credentials>().ToList().First();
@@ -61,6 +62,19 @@ namespace Afaq.IPTV.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
+                LoginCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool CanLogin
+        {
+            get
+            {
+                return _canLogin;
+            }
+            set
+            {
+                _canLogin = value;
                 LoginCommand.RaiseCanExecuteChanged();
             }
         }
@@ -125,6 +139,7 @@ namespace Afaq.IPTV.ViewModels
             IsSigningIn = false;
             switch (loginResult.LoginStatus) {
                 case LoginStatus.Successful:
+                    LoginSucceeded?.Invoke(this, null);
                     var usrname = Username;
                     var credentials = _realm.All<Credentials>().Where(d => d.Username == usrname).ToList();
 
@@ -150,7 +165,8 @@ namespace Afaq.IPTV.ViewModels
 
                     var channels = loginResult.Channels;
                     var parameters = new NavigationParameters { { StrChannels, channels } };
-                    await _navigationService.NavigateAsync("MainPage", parameters);
+          
+                    await _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute), parameters, true);
 
                     break;
                 case LoginStatus.Error:

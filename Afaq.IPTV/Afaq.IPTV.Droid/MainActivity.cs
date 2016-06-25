@@ -1,34 +1,46 @@
 ﻿using Afaq.IPTV.Events;
 using Afaq.IPTV.Helpers;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Views;
 using Microsoft.Practices.Unity;
 using Prism.Events;
+using Prism.Unity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 namespace Afaq.IPTV.Droid
 {
-    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true,
-        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    [IntentFilter(new[] {"android.intent.action.MAIN"}, AutoVerify = true,
-        Categories = new[] {"android.intent.category.LEANBACK_LAUNCHER"})]
+    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [IntentFilter(new[] { Intent.ActionMain }, Categories = new[] { Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher })]
     public class MainActivity : FormsApplicationActivity
     {
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
-
+        private PrismApplication _application;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+
+
             Forms.Init(this, bundle);
-            var application = new App();
-            _container = application.Container;
-            LoadApplication(application);
+
+            var uiModeManager = (UiModeManager)GetSystemService(UiModeService);
+            if (uiModeManager.CurrentModeType == UiMode.TypeTelevision) {
+                _application = new TvApp();
+            } else {
+                _application = new MobileApp();
+            }
+
+
+            //var application = new App();
+            _container = _application.Container;
+            LoadApplication(_application);
             _eventAggregator = _container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<FullScreenEvent>().Subscribe(OnFullScreenEvent);
         }
@@ -236,13 +248,9 @@ namespace Afaq.IPTV.Droid
                     MessagingCenter.Send<object>(this, Constants.DelKey);
                     break;
                 default:
-                    //var toast = Toast.MakeText(Forms.Context, "KeyPressed", ToastLength.Short);
-                    //toast.SetText(e.KeyCode.ToString());
-                    //toast.Show();
                     break;
             }
             return base.OnKeyDown(keyCode, e);
-            ;
         }
     }
 }

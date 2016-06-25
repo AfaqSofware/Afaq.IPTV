@@ -1,5 +1,6 @@
 ﻿using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
+using Prism.Navigation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,32 +8,47 @@ using Xamarin.Forms.Xaml;
 
 namespace Afaq.IPTV.Views
 {
-    public partial class LoginPage : ContentPage
+    public partial class LoginPage:INavigationAware
     {
         private readonly LoginPageViewModel _viewModel;
 
         public LoginPage()
         {
             InitializeComponent();
+
+            _viewModel = (LoginPageViewModel) BindingContext;
             MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
-            _viewModel = (LoginPageViewModel) BindingContext;
-            AutoLogin();
-        }
-
-        private async void AutoLogin()
-        {
-            if (_viewModel.IsAutoLogin)
-            {
-                await _viewModel.LoginCommand.Execute();
-            }
+      //      AutoLogin();
         }
 
         protected override void OnAppearing()
         {
+            _viewModel.CanLogin = true;
             if (!LoginButton.IsFocused)
             {
                 LoginButton.Focus();
+            }
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            _viewModel.CanLogin = false;
+            base.OnDisappearing();
+        }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            if (width > height)
+            {
+                outerStackLayout.Orientation = StackOrientation.Horizontal;
+            }
+            else
+            {
+                outerStackLayout.Orientation = StackOrientation.Vertical;
             }
         }
 
@@ -100,6 +116,26 @@ namespace Afaq.IPTV.Views
                     }
                 }
             }
+        }
+
+        private async void AutoLogin()
+        {
+            if (_viewModel.IsAutoLogin)
+            {
+                await _viewModel.LoginCommand.Execute();
+            }
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
+            if (parameters != null && (bool)parameters["IsAutoLogin"]) {
+                AutoLogin();
+            } 
         }
     }
 }
