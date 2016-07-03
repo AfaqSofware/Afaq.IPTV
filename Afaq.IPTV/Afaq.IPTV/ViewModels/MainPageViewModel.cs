@@ -13,7 +13,6 @@ namespace Afaq.IPTV.ViewModels
     public class MainPageViewModel : BindableBase, INavigationAware, IMainPageViewModel
     {
         private readonly IChannelService _channelService;
-        private readonly IEventAggregator _eventAggregator;
 
         private ObservableCollection<ChannelList> _channelLists;
 
@@ -22,12 +21,12 @@ namespace Afaq.IPTV.ViewModels
             IChannelService channelService)
         {
             NavigationService = navigationService;
-            _eventAggregator = eventAggregator;
+            Aggregator = eventAggregator;
             _channelService = channelService;
-            _eventAggregator.GetEvent<BackButtonPressed>().Subscribe(OnBackButtonPressed);
         }
 
         public INavigationService NavigationService { get; }
+        public IEventAggregator Aggregator { get; }
 
         public ObservableCollection<ChannelList> ChannelLists
         {
@@ -56,6 +55,7 @@ namespace Afaq.IPTV.ViewModels
             var data = (string) parameters["channels"];
             var result = await _channelService.GetAllChannelsAsync(data);
             ChannelLists = new ObservableCollection<ChannelList>(result);
+
             // subscribing to the event form all the channelLists                                       
             foreach (var channelList in ChannelLists)
             {
@@ -71,17 +71,6 @@ namespace Afaq.IPTV.ViewModels
             channelParameters.Add("channel", channel);
             NavigationService.NavigateAsync("VideoPage", channelParameters);
         }
-
-        private async void OnBackButtonPressed(object obj)
-        {
-            try {
-                await NavigationService.GoBackAsync();
-            }
-            catch (Exception) {
-                throw;
-            }
-        }
-
 
 
     }

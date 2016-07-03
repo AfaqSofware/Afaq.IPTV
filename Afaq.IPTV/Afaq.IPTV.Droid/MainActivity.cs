@@ -62,25 +62,37 @@ namespace Afaq.IPTV.Droid
             }
         }
 
+        public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
+        {
+            return true;
+        }
+
+        //public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        //{
+        //    return true;
+        //}
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (e.KeyCode)
-            {
+            switch (e.KeyCode) {
                 case Keycode.DpadUp:
                     MessagingCenter.Send<object>(this, Constants.MoveUp);
+                    return true; 
                     break;
 
                 case Keycode.DpadDown:
                     MessagingCenter.Send<object>(this, Constants.MoveDown);
+                    return true;
                     break;
 
                 case Keycode.DpadLeft:
                     MessagingCenter.Send<object>(this, Constants.MoveLeft);
+                    return true;
                     break;
 
                 case Keycode.DpadRight:
                     MessagingCenter.Send<object>(this, Constants.MoveRight);
+                    return true;
                     break;
                 case Keycode.Enter:
                     MessagingCenter.Send<object>(this, Constants.EnterKey);

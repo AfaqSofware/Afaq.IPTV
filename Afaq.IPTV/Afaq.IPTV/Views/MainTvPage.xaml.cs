@@ -105,7 +105,7 @@ namespace Afaq.IPTV.Views
         {
             MessagingCenter.Send<object>(this, "ReleasePreviewer");
         }
-
+        
 
     }
 }

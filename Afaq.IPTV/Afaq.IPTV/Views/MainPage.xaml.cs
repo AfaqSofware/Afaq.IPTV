@@ -1,4 +1,5 @@
 ﻿using System;
+using Afaq.IPTV.Events;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
 using Microsoft.Practices.Unity;
@@ -21,6 +22,13 @@ namespace Afaq.IPTV.Views
         private void MainPage_OnAppearing(object sender, EventArgs e)
         {
             MessagingCenter.Send<object>(this, "ShowPreviewer");
+
+            if (Device.Idiom == TargetIdiom.Phone) {
+             _viewModel.Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = false, IsPhone = true });
+            } else {
+                _viewModel.Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = false, IsPhone = false });
+            }
+
         }
 
 

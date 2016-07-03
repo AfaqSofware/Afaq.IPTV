@@ -10,12 +10,12 @@ namespace Afaq.IPTV.ViewModels
 {
     public class VideoPageViewModel : BindableBase, INavigationAware, IVideoPageViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
+        public IEventAggregator Aggregator { get; }
         private string _videoSource;
 
         public VideoPageViewModel(IEventAggregator eventAggregator)
         {
-            _eventAggregator = eventAggregator;
+            Aggregator = eventAggregator;
 
             MessagingCenter.Subscribe<MainPageViewModel, Channel>(this, "ChannelChanged", OnChannelChanged);
         }
@@ -39,9 +39,9 @@ namespace Afaq.IPTV.ViewModels
         public void OnNavigatedTo(NavigationParameters parameters)
         {
             if (Device.Idiom == TargetIdiom.Phone) {
-                _eventAggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = true });
+                Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = true });
             } else {
-                _eventAggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = false });
+                Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = false });
             }
 
             if (parameters.ContainsKey("channel")) {
