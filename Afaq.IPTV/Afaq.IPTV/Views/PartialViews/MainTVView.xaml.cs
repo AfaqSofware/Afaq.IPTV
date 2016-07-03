@@ -12,14 +12,9 @@ namespace Afaq.IPTV.Views.PartialViews
     {
         public MainTvView()
         {
-            this.Focused += OnFocus;
             InitializeComponent();
         }
 
-        private void OnFocus(object sender, FocusEventArgs e)
-        {
-            var x = 5; 
-        }
 
         private void MyChannelList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {

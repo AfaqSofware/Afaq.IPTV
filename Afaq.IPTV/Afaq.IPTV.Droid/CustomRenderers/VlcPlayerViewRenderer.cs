@@ -32,10 +32,27 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if ((vlcPlayerView == null) || (e.OldElement != null)) return;
             _vlcVideoPlayer = new VlcVideoPlayer(Context);
             _vlcVideoPlayer.PlayerStateChanged += OnPlayerStateChanged;
-            MessagingCenter.Subscribe<object, string>(this, "Play", OnPlay);
             MessagingCenter.Subscribe<object>(this, Constants.ReleasePlayer, OnRelease);
+            MessagingCenter.Subscribe<object>(this, Constants.VolumeUp, OnVolumeUp);
+            MessagingCenter.Subscribe<object>(this, Constants.VolumeDown, OnVolumeDown);
+            MessagingCenter.Subscribe<object>(this, Constants.VolumeMute, OnVolumeMute);
             SetNativeControl(_vlcVideoPlayer);
 
+        }
+
+        private void OnVolumeMute(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(0);
+        }
+
+        private void OnVolumeDown(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume-10);
+        }
+
+        private void OnVolumeUp(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume + 10);
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -62,7 +79,6 @@ namespace Afaq.IPTV.Droid.CustomRenderers
         {
             _vlcVideoPlayer.Release();
             _vlcVideoPlayer.PlayerStateChanged -= OnPlayerStateChanged;
-            MessagingCenter.Unsubscribe<object, string>(this, "Play");
             MessagingCenter.Unsubscribe<object>(this, Constants.ReleasePlayer);
             _vlcVideoPlayer = null;
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Afaq.IPTV.Helpers
+﻿namespace Afaq.IPTV.Helpers
 {
     public enum KeyMessage
     {
@@ -20,22 +14,29 @@ namespace Afaq.IPTV.Helpers
         DelKey,
         SearchKey,
         SettingsKey,
-        ReleasePlayer
+        ReleasePlayer,
+        VolumeUp,
+        VolumeDown,
+        VolumeMute
     }
+
     public class Constants
     {
-        public const string MoveUp       = "MoveUp";
-        public const string MoveDown     = "MoveDown";
-        public const string MoveLeft     = "MoveLeft";
-        public const string MoveRight    = "MoveRight";
-        public const string EnterKey     = "Enter";
-        public const string KeyEntered   = "KeyEntered";
-        public const string ChannelDown  = "ChannelDown";
-        public const string ChannelUp    = "ChannelUp";
-        public const string MenuKey      = "MenuKey";
-        public const string DelKey          = "DelKey";
-        public const string SearchKey        = "SearchKey";
-        public const string SettingsKey     = "SettingsKey";
-        public const string ReleasePlayer   = "ReleasePlayer";
+        public const string VolumeUp = "VolumeUp";
+        public const string VolumeDown = "VolumeDown";
+        public const string VolumeMute = "VolumeMute";
+        public const string MoveUp = "MoveUp";
+        public const string MoveDown = "MoveDown";
+        public const string MoveLeft = "MoveLeft";
+        public const string MoveRight = "MoveRight";
+        public const string EnterKey = "Enter";
+        public const string KeyEntered = "KeyEntered";
+        public const string ChannelDown = "ChannelDown";
+        public const string ChannelUp = "ChannelUp";
+        public const string MenuKey = "MenuKey";
+        public const string DelKey = "DelKey";
+        public const string SearchKey = "SearchKey";
+        public const string SettingsKey = "SettingsKey";
+        public const string ReleasePlayer = "ReleasePlayer";
     }
 }

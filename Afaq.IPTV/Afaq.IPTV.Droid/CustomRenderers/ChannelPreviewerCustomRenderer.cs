@@ -30,13 +30,16 @@ namespace Afaq.IPTV.Droid.CustomRenderers
 
         private void OnShowPreviewer(object obj)
         {
-            Control.Visibility = ViewStates.Visible;
+            if (Control != null) Control.Visibility = ViewStates.Visible;
         }
 
         private void OnReleasePreviewer(object obj)
         {
-            Control.Suspend();
-            Control.Visibility = ViewStates.Invisible;
+            if (Control != null)
+            {
+                Control.Suspend();
+                Control.Visibility = ViewStates.Invisible;
+            }
         }
 
      

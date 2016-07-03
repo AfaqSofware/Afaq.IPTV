@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
 using Xamarin.Forms;
+using Prism.Navigation;
 
 namespace Afaq.IPTV.Views
 {
     public partial class MainTvPage 
     {
+
         private readonly IMainPageViewModel _viewModel;
 
         public MainTvPage(IMainPageViewModel viewModel)
@@ -105,8 +107,13 @@ namespace Afaq.IPTV.Views
         {
             MessagingCenter.Send<object>(this, "ReleasePreviewer");
         }
-        
 
+        protected override bool OnBackButtonPressed()
+        {
+            _viewModel.NavigationService.NavigateAsync(new Uri("http://www.Afaq.com/LoginPage", UriKind.Absolute), new NavigationParameters { { "IsAutoLogin", false } }, true).Wait();
+
+            return true;
+        }
     }
 }
 

@@ -14,26 +14,30 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Afaq.IPTV.Droid
 {
-    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    [IntentFilter(new[] { Intent.ActionMain }, Categories = new[] { Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher })]
+    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [IntentFilter(new[] {Intent.ActionMain},
+        Categories = new[] {Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher})]
     public class MainActivity : FormsApplicationActivity
     {
+        private PrismApplication _application;
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
-        private PrismApplication _application;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
 
-
             Forms.Init(this, bundle);
 
-            var uiModeManager = (UiModeManager)GetSystemService(UiModeService);
-            if (uiModeManager.CurrentModeType == UiMode.TypeTelevision) {
+            var uiModeManager = (UiModeManager) GetSystemService(UiModeService);
+            if (uiModeManager.CurrentModeType == UiMode.TypeTelevision)
+            {
                 _application = new TvApp();
-            } else {
+            }
+            else
+            {
                 _application = new MobileApp();
             }
 
@@ -62,40 +66,38 @@ namespace Afaq.IPTV.Droid
             }
         }
 
-        public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
-        {
-            return true;
-        }
-
-        //public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
-        //{
-        //    return true;
-        //}
-
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            switch (e.KeyCode) {
+            switch (e.KeyCode)
+            {
                 case Keycode.DpadUp:
                     MessagingCenter.Send<object>(this, Constants.MoveUp);
-                    return true; 
-                    break;
+                    return true;
 
                 case Keycode.DpadDown:
                     MessagingCenter.Send<object>(this, Constants.MoveDown);
                     return true;
-                    break;
 
                 case Keycode.DpadLeft:
                     MessagingCenter.Send<object>(this, Constants.MoveLeft);
                     return true;
-                    break;
 
                 case Keycode.DpadRight:
                     MessagingCenter.Send<object>(this, Constants.MoveRight);
                     return true;
-                    break;
+
                 case Keycode.Enter:
                     MessagingCenter.Send<object>(this, Constants.EnterKey);
+                    break;
+
+                case Keycode.VolumeUp:
+                    MessagingCenter.Send<object>(this, Constants.VolumeUp);
+                    break;
+                case Keycode.VolumeDown:
+                    MessagingCenter.Send<object>(this, Constants.VolumeDown);
+                    break;
+                case Keycode.VolumeMute:
+                    MessagingCenter.Send<object>(this, Constants.VolumeMute);
                     break;
 
                 case Keycode.Num0:
@@ -256,8 +258,6 @@ namespace Afaq.IPTV.Droid
                     break;
                 case Keycode.Del:
                     MessagingCenter.Send<object>(this, Constants.DelKey);
-                    break;
-                default:
                     break;
             }
             return base.OnKeyDown(keyCode, e);
