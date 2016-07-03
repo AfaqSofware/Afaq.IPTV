@@ -86,6 +86,7 @@ namespace Afaq.IPTV.Droid
                     MessagingCenter.Send<object>(this, Constants.MoveRight);
                     return true;
 
+                case Keycode.DpadCenter:
                 case Keycode.Enter:
                     MessagingCenter.Send<object>(this, Constants.EnterKey);
                     break;

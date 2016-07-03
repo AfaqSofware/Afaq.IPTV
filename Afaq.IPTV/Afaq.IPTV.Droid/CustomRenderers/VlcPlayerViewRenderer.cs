@@ -80,6 +80,9 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             _vlcVideoPlayer.Release();
             _vlcVideoPlayer.PlayerStateChanged -= OnPlayerStateChanged;
             MessagingCenter.Unsubscribe<object>(this, Constants.ReleasePlayer);
+            MessagingCenter.Unsubscribe<object>(this, Constants.VolumeUp);
+            MessagingCenter.Unsubscribe<object>(this, Constants.VolumeDown);
+            MessagingCenter.Unsubscribe<object>(this, Constants.VolumeMute);
             _vlcVideoPlayer = null;
         }
     }
