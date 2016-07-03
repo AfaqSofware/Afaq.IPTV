@@ -14,7 +14,7 @@ namespace Afaq.IPTV.Views
 
         private void VideoPage_OnDisappearing(object sender, EventArgs e)
         {
-            MessagingCenter.Send<object, bool>(this,Constants.ReleasePlayer, true);
+            MessagingCenter.Send<object>(this,Constants.ReleasePlayer);
         }
 
     }

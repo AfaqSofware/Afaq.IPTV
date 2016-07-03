@@ -37,8 +37,6 @@ namespace Afaq.IPTV.Droid
                 _application = new MobileApp();
             }
 
-
-            //var application = new App();
             _container = _application.Container;
             LoadApplication(_application);
             _eventAggregator = _container.Resolve<IEventAggregator>();

@@ -19,7 +19,7 @@ namespace Afaq.IPTV.Views
             _viewModel = (LoginPageViewModel) BindingContext;
             MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
-      //      AutoLogin();
+            AutoLogin();
         }
 
         protected override void OnAppearing()
