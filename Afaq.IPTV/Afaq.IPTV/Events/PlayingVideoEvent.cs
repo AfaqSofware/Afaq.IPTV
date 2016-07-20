@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Afaq.IPTV.Events
 {
-    public class FullScreenEvent:PubSubEvent<FullScreenEventArgs>
+    public class PlayingVideoEvent:PubSubEvent<bool>
     {
     }
 }

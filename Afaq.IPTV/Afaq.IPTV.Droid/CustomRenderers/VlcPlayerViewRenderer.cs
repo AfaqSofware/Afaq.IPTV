@@ -5,9 +5,11 @@ using Afaq.IPTV.Droid.CustomRenderers;
 using Afaq.IPTV.Droid.Players.VlcPlayer;
 using Afaq.IPTV.Helpers;
 using Android.Net;
+using Android.Views;
 using Android.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using View = Xamarin.Forms.View;
 
 [assembly: ExportRenderer(typeof(VlcPlayerView), typeof(VlcPlayerViewRenderer))]
 
@@ -26,6 +28,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
         protected override void OnElementChanged(ElementChangedEventArgs<View> e)
         {
             base.OnElementChanged(e);
+
          
             var vlcPlayerView = Element as VlcPlayerView;
 

@@ -5,7 +5,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:controls="clr-namespace:Afaq.IPTV.Controls;assembly=Afaq.IPTV"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="Afaq.IPTV.Views.VideoPage" Title="Detail" Disappearing="VideoPage_OnDisappearing">
+             x:Class="Afaq.IPTV.Views.VideoPage" Title="Detail" Disappearing="VideoPage_OnDisappearing" BackgroundColor="Black">
 
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"

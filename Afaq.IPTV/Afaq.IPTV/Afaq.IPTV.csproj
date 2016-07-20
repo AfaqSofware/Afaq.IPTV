@@ -44,8 +44,8 @@
     <Compile Include="Events\BackButtonPressed.cs" />
     <Compile Include="Enums\DefinitionQuality.cs" />
     <Compile Include="Events\ExitAppEvent.cs" />
-    <Compile Include="Events\FullScreenEvent.cs" />
-    <Compile Include="Events\FullScreenEventArgs.cs" />
+    <Compile Include="Events\PlayingVideoEvent.cs" />
+    <Compile Include="Events\PlayingVideoEventArgs.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\M3U.cs" />
     <Compile Include="Helpers\M3UList.cs" />

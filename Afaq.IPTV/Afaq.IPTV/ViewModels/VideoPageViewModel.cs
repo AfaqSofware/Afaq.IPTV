@@ -38,11 +38,8 @@ namespace Afaq.IPTV.ViewModels
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            if (Device.Idiom == TargetIdiom.Phone) {
-                Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = true });
-            } else {
-                Aggregator.GetEvent<FullScreenEvent>().Publish(new FullScreenEventArgs { IsFullScreen = true, IsPhone = false });
-            }
+            Aggregator.GetEvent<PlayingVideoEvent>().Publish(true); //Turn on Cinema mode 
+           
 
             if (parameters.ContainsKey("channel")) {
                 VideoSource = ((Channel)parameters["channel"]).CurrentSource.VideoSource.ToString();

@@ -8,7 +8,7 @@ using Prism.Navigation;
 
 namespace Afaq.IPTV.Events
 {
-    public class FullScreenEventArgs
+    public class PlayingVideoEventArgs
     {
         public bool IsFullScreen { get; set; }
         public bool IsPhone { get; set; }
