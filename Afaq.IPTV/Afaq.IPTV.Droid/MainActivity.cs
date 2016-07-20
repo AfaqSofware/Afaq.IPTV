@@ -16,7 +16,7 @@ using Xamarin.Forms.Platform.Android;
 namespace Afaq.IPTV.Droid
 {
     [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    //[IntentFilter(new[] {Intent.ActionMain}, Categories = new[] {Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher})]
+    [IntentFilter(new[] {Intent.ActionMain}, Categories = new[] {Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher})]
     public class MainActivity : FormsApplicationActivity
     {
         private PrismApplication _application;

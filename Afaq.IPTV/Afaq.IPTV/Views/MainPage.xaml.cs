@@ -1,23 +1,22 @@
 ﻿using System;
-using Afaq.IPTV.Events;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
-using Microsoft.Practices.Unity;
-using Prism.Navigation;
 using Xamarin.Forms;
 
 namespace Afaq.IPTV.Views
 {
     public partial class MainPage
     {
-        private IMainPageViewModel _viewModel;
+        private MainPageViewModel _viewModel;
 
-        public MainPage(IMainPageViewModel viewModel)
+        public MainPage()
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            BindingContext = _viewModel;
-
+            _viewModel = (MainPageViewModel) BindingContext;
             MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
             MessagingCenter.Subscribe<object>(this, Constants.MoveLeft, OnMoveLeft);
@@ -27,93 +26,55 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
         }
 
-
         private void OnMoveRight(object obj)
         {
-            var index = Children.IndexOf(CurrentPage);
-            if (index >= Children.Count - 1) return;
-            index++;
-            CurrentPage = Children[index];
+            _viewModel.GetNextChannelList();
         }
 
         private void OnMoveLeft(object obj)
         {
-            var index = Children.IndexOf(CurrentPage);
-            if (index <= 0) return;
-            index--;
-            CurrentPage = Children[index];
+            _viewModel.GetPreviousChannelList();
         }
 
         private void OnDelete(object obj)
         {
-            foreach (var channelList in _viewModel.ChannelLists) {
-                if (channelList.Name != CurrentPage.Title) continue;
-                var oldtext = channelList.SearchKey;
-                if (string.IsNullOrEmpty(oldtext)) {
-                    return;
-                }
-                var newText = oldtext.Remove(oldtext.Length - 1);
-                channelList.SearchKey = newText;
-            }
+            var oldtext = _viewModel.CurrentChannelList.SearchKey;
+            var newText = oldtext.Remove(oldtext.Length - 1);
+            _viewModel.CurrentChannelList.SearchKey = newText;
         }
 
         private void OnKeyEntered(object arg1, string key)
         {
-            foreach (var channelList in _viewModel.ChannelLists) {
-                if (channelList.Name == CurrentPage.Title) {
-                    channelList.SearchKey += key;
-                }
-            }
+            _viewModel.CurrentChannelList.SearchKey += key;
         }
 
-        private void OnEnter(object obj)
-        {
-            foreach (var channelList in _viewModel.ChannelLists) {
-                if (channelList.Name == CurrentPage.Title) {
-                    channelList.PlaySelectedChannel();
-                }
-            }
-        }
+     
 
         private void OnMoveDown(object obj)
         {
-            if (_viewModel.ChannelLists == null) return;
-            foreach (var channelList in _viewModel.ChannelLists) {
-                if (channelList.Name == CurrentPage.Title) {
-                    channelList.MoveSelectionDown(null);
-                }
-            }
+            _viewModel.CurrentChannelList?.MoveSelectionDown(null);
         }
 
         private void OnMoveUp(object obj)
         {
-            if (_viewModel.ChannelLists == null) return;
-            foreach (var channelList in _viewModel.ChannelLists) {
-                if (channelList.Name == CurrentPage.Title) {
-                    channelList.MoveSelectionUp(null);
-                }
-            }
-        }
-
-        private void MainPage_OnAppearing(object sender, EventArgs e)
-        {
-            MessagingCenter.Send<object>(this, "ShowPreviewer");
-            _viewModel.Aggregator.GetEvent<PlayingVideoEvent>().Publish(false); 
+            _viewModel.CurrentChannelList?.MoveSelectionUp(null);
            
-
         }
 
-
-        private void MainPage_OnDisappearing(object sender, EventArgs e)
+        private void MyChannelList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            MessagingCenter.Send<object>(this, "ReleasePreviewer");
+            var lstView = (ListView)sender;
+
+            lstView.ScrollTo(lstView.SelectedItem, ScrollToPosition.Center, false);
         }
 
-        protected override bool OnBackButtonPressed()
+        private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
         {
-            _viewModel.NavigationService.NavigateAsync(new Uri("http://www.Afaq.com/LoginPage", UriKind.Absolute), new NavigationParameters { { "IsAutoLogin", false } }, true).Wait();
-
-            return true;
+           _viewModel.PlayChannel(_viewModel.CurrentChannel);
+        }
+        private void OnEnter(object obj)
+        {
+            _viewModel.PlayChannel(_viewModel.CurrentChannel);
         }
     }
 }

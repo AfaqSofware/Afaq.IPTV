@@ -20,7 +20,7 @@ namespace Afaq.IPTV
         protected override void RegisterTypes()
         {
             Container.RegisterType<INavigationService, UnityPageNavigationService>(); 
-            Container.RegisterType<IMainPageViewModel, MainPageViewModel>();
+            //Container.RegisterType<IMainPageViewModel, MainPageViewModel>();
             Container.RegisterType<IAuthenticationService, AuthenticationService>();
             Container.RegisterType<IChannelService, M3UChannelService>();
 

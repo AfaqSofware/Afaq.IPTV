@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Afaq.IPTV.Events;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
-using Xamarin.Forms;
+using Microsoft.Practices.Unity;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace Afaq.IPTV.Views
 {
-    public partial class MainTvPage 
+    public partial class _MainPage
     {
+        private _IMainPageViewModel _viewModel;
 
-        private readonly _IMainPageViewModel _viewModel;
-
-        public MainTvPage(_IMainPageViewModel viewModel)
+        public _MainPage(_IMainPageViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;
-            BindingContext = viewModel;
+            BindingContext = _viewModel;
 
             MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
@@ -29,6 +26,7 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Subscribe<object>(this, Constants.DelKey, OnDelete);
             MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
         }
+
 
         private void OnMoveRight(object obj)
         {
@@ -100,6 +98,9 @@ namespace Afaq.IPTV.Views
         private void MainPage_OnAppearing(object sender, EventArgs e)
         {
             MessagingCenter.Send<object>(this, "ShowPreviewer");
+            _viewModel.Aggregator.GetEvent<PlayingVideoEvent>().Publish(false); 
+           
+
         }
 
 
@@ -116,4 +117,3 @@ namespace Afaq.IPTV.Views
         }
     }
 }
-

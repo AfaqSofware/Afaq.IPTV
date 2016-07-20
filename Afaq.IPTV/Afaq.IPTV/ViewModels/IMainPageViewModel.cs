@@ -1,18 +1,18 @@
-﻿using System.Collections.ObjectModel;
-using Afaq.IPTV.Models;
-using Prism.Events;
+﻿using Afaq.IPTV.Models;
 using Prism.Navigation;
 
 namespace Afaq.IPTV.ViewModels
 {
     public interface IMainPageViewModel
     {
-        ObservableCollection<ChannelList> ChannelLists { get; set; }
-        string CurrentListName { get; set; }
+        Channel CurrentChannel { get; set; }
+        ChannelList CurrentChannelList { get; set; }
         INavigationService NavigationService { get; }
-        IEventAggregator Aggregator { get; }
 
+        void GetNextChannelList();
+        void GetPreviousChannelList();
         void OnNavigatedFrom(NavigationParameters parameters);
         void OnNavigatedTo(NavigationParameters parameters);
+        void PlayChannel(Channel currentChannel);
     }
 }
