@@ -1,18 +1,27 @@
-﻿using Afaq.IPTV.Models;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
+using Afaq.IPTV.Models;
+using Prism.Events;
 using Prism.Navigation;
 
 namespace Afaq.IPTV.ViewModels
 {
     public interface IMainPageViewModel
     {
+        List<ChannelList> ChannelLists { get; set; }
         Channel CurrentChannel { get; set; }
         ChannelList CurrentChannelList { get; set; }
-        INavigationService NavigationService { get; }
 
-        void GetNextChannelList();
-        void GetPreviousChannelList();
         void OnNavigatedFrom(NavigationParameters parameters);
         void OnNavigatedTo(NavigationParameters parameters);
-        void PlayChannel(Channel currentChannel);
+
+        ICommand GetNextChannelListCommand { get;  }
+        ICommand GetPreviousChannelListCommand { get; }
+        ICommand PlayCurrentChannelCommand { get;  }
+
+        void SetCinemaMode(bool isCinemaMode);
+        void SignOut();
+        void MoveSelectionUp();
+        void MoveSelectionDown();
     }
 }

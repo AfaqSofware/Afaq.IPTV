@@ -5,6 +5,7 @@ using Microsoft.Practices.Unity;
 using Prism.Navigation;
 using Prism.Unity;
 using Prism.Unity.Navigation;
+using Xamarin.Forms;
 
 namespace Afaq.IPTV
 {
@@ -20,13 +21,21 @@ namespace Afaq.IPTV
         protected override void RegisterTypes()
         {
             Container.RegisterType<INavigationService, UnityPageNavigationService>(); 
-            //Container.RegisterType<IMainPageViewModel, MainPageViewModel>();
+            Container.RegisterType<IMainPageViewModel, MainPageViewModel>();
             Container.RegisterType<IAuthenticationService, AuthenticationService>();
             Container.RegisterType<IChannelService, M3UChannelService>();
 
             Container.RegisterTypeForNavigation<VideoPage>();
             Container.RegisterTypeForNavigation<LoginPage>();
-            Container.RegisterTypeForNavigation<MainPage>();
+            if (Device.Idiom == TargetIdiom.Phone)
+            {
+                Container.RegisterTypeForNavigation<PhoneMainPage>("MainPage");
+            }
+            else
+            {
+                Container.RegisterTypeForNavigation<TvMainPage>("MainPage");
+            }
+            
         }
     }
 }

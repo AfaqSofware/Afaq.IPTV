@@ -38,7 +38,7 @@ namespace Afaq.IPTV.ViewModels
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            Aggregator.GetEvent<PlayingVideoEvent>().Publish(true); //Turn on Cinema mode 
+            Aggregator.GetEvent<CinemaModeEvent>().Publish(true); //Turn on Cinema mode 
            
 
             if (parameters.ContainsKey("channel")) {

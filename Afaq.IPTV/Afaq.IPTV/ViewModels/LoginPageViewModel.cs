@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Afaq.IPTV.Helpers;
 using Afaq.IPTV.Models;
 using Afaq.IPTV.Services;
 using Prism.Commands;
@@ -135,51 +136,65 @@ namespace Afaq.IPTV.ViewModels
         {
             IsSigningIn = true;
 
-            var loginResult = await _authenticationService.GetRequestAsync(Username, Password);
-            IsSigningIn = false;
-            switch (loginResult.LoginStatus) {
-                case LoginStatus.Successful:
-                    LoginSucceeded?.Invoke(this, null);
-                    var usrname = Username;
-                    var credentials = _realm.All<Credentials>().Where(d => d.Username == usrname).ToList();
+            try
+            {
+                var loginResult = await _authenticationService.GetRequestAsync(Username, Password);
 
-                    foreach (var credential in credentials) {
-                        using (var trans = _realm.BeginWrite()) {
-                            _realm.Remove(credential);
-                            trans.Commit();
+                IsSigningIn = false;
+                switch (loginResult.LoginStatus)
+                {
+                    case LoginStatus.Successful:
+                        LoginSucceeded?.Invoke(this, null);
+                        var usrname = Username;
+                        var credentials = _realm.All<Credentials>().Where(d => d.Username == usrname).ToList();
+
+                        foreach (var credential in credentials)
+                        {
+                            using (var trans = _realm.BeginWrite())
+                            {
+                                _realm.Remove(credential);
+                                trans.Commit();
+                            }
                         }
-                    }
 
-                    _realm.Write(() =>
-                    {
-                        var entry = _realm.CreateObject<Credentials>();
+                        _realm.Write(() =>
+                        {
+                            var entry = _realm.CreateObject<Credentials>();
 
-                        if (IsRememberMe) {
-                            entry.Password = Password;
-                        }
-                        entry.Username = Username;
-                        entry.IsAutoLogin = IsAutoLogin;
-                        entry.IsRememberMe = IsRememberMe;
-                    });
+                            if (IsRememberMe)
+                            {
+                                entry.Password = Password;
+                            }
+                            entry.Username = Username;
+                            entry.IsAutoLogin = IsAutoLogin;
+                            entry.IsRememberMe = IsRememberMe;
+                        });
 
 
-                    var channels = loginResult.Channels;
-                    var parameters = new NavigationParameters { { StrChannels, channels } };
-          
-                    await _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute), parameters, true);
+                        var channels = loginResult.Channels;
+                        var parameters = new NavigationParameters {{StrChannels, channels}};
 
-                    break;
-                case LoginStatus.Error:
-                    StatusMessage = loginResult.StatusMessage;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                        await
+                            _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute),
+                                parameters, true);
+
+                        break;
+                    case LoginStatus.Error:
+                        StatusMessage = loginResult.StatusMessage;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+
+                }
+            }
+
+            catch (Exception)
+            {
+
+               MessagingCenter.Send<object>(this,Constants.LoginError);
             }
         }
+
     }
-
-
-
-
 
 }

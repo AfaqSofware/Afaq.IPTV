@@ -38,5 +38,6 @@
         public const string SearchKey = "SearchKey";
         public const string SettingsKey = "SettingsKey";
         public const string ReleasePlayer = "ReleasePlayer";
+        public const string LoginError = "LoginError";
     }
 }

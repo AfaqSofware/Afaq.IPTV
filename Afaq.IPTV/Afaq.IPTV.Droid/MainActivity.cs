@@ -7,11 +7,13 @@ using Android.Content.Res;
 using Android.Hardware;
 using Android.OS;
 using Android.Views;
+using Android.Widget;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Unity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using View = Android.Views.View;
 
 namespace Afaq.IPTV.Droid
 {
@@ -45,15 +47,22 @@ namespace Afaq.IPTV.Droid
             _container = _application.Container;
             LoadApplication(_application);
             _eventAggregator = _container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<PlayingVideoEvent>().Subscribe(OnFullScreenEvent);
+            _eventAggregator.GetEvent<CinemaModeEvent>().Subscribe(OnCinemaModeEvent);
+            MessagingCenter.Subscribe<object>(this, Constants.LoginError, OnLoginError);
+        }
+
+        private void OnLoginError(object obj)
+        {
+            Toast.MakeText(this,"Login problems. Check your internet connection",ToastLength.Short).Show();
         }
 
 
-        private void OnFullScreenEvent(bool cenimaMode)
+        private void OnCinemaModeEvent(bool cenimaMode)
         {
             if (cenimaMode)
             {
                 Window.AddFlags(WindowManagerFlags.Fullscreen);
+
                 Window.AddFlags(WindowManagerFlags.KeepScreenOn);
             }
             else
@@ -87,7 +96,7 @@ namespace Afaq.IPTV.Droid
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            if (_isTV)
+            if (true)
             {
                 switch (e.KeyCode) {
                     case Keycode.DpadUp:

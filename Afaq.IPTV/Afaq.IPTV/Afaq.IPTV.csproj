@@ -44,7 +44,7 @@
     <Compile Include="Events\BackButtonPressed.cs" />
     <Compile Include="Enums\DefinitionQuality.cs" />
     <Compile Include="Events\ExitAppEvent.cs" />
-    <Compile Include="Events\PlayingVideoEvent.cs" />
+    <Compile Include="Events\CinemaModeEvent.cs" />
     <Compile Include="Events\PlayingVideoEventArgs.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\M3U.cs" />
@@ -65,7 +65,6 @@
       <DependentUpon>TvApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\IMainPageViewModel.cs" />
-    <Compile Include="ViewModels\_IMainPageViewModel.cs" />
     <Compile Include="ViewModels\IVideoPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
@@ -73,23 +72,11 @@
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\_MainPage.xaml.cs">
-      <DependentUpon>_MainPage.xaml</DependentUpon>
+    <Compile Include="Views\PhoneMainPage.xaml.cs">
+      <DependentUpon>PhoneMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PartialViews\MainPhoneView.xaml.cs">
-      <DependentUpon>MainPhoneView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PartialViews\MainTabletView.xaml.cs">
-      <DependentUpon>MainTabletView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainTvPage.xaml.cs">
-      <DependentUpon>MainTvPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PartialViews\MainTVView.xaml.cs">
-      <DependentUpon>MainTVView.xaml</DependentUpon>
+    <Compile Include="Views\TVMainPage.xaml.cs">
+      <DependentUpon>TVMainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VideoPage.xaml.cs">
       <DependentUpon>VideoPage.xaml</DependentUpon>
@@ -181,20 +168,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PartialViews\MainPhoneView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\_MainPage.xaml">
+    <EmbeddedResource Include="Views\PhoneMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\PartialViews\MainTabletView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -211,19 +186,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\MainTvPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\PartialViews\MainTVView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\MainPage.xaml">
+    <EmbeddedResource Include="Views\TVMainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -36,6 +36,8 @@ namespace Afaq.IPTV.Models
 
         #region Properties
 
+
+
         public Channel CurrentChannel
         {
             get { return _currentChannel; }

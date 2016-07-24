@@ -20,15 +20,14 @@ namespace Afaq.IPTV.Droid.CustomRenderers
         
         private VlcVideoPlayer _vlcVideoPlayer;
 
-        private void OnPlay(object arg1, string media)
+        public VlcPlayerViewRenderer()
         {
-            _vlcVideoPlayer.Play(Android.Net.Uri.Parse(media));
+            RootView.SystemUiVisibility = StatusBarVisibility.Hidden;            
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<View> e)
         {
             base.OnElementChanged(e);
-
          
             var vlcPlayerView = Element as VlcPlayerView;
 
@@ -40,22 +39,6 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             MessagingCenter.Subscribe<object>(this, Constants.VolumeDown, OnVolumeDown);
             MessagingCenter.Subscribe<object>(this, Constants.VolumeMute, OnVolumeMute);
             SetNativeControl(_vlcVideoPlayer);
-
-        }
-
-        private void OnVolumeMute(object obj)
-        {
-            _vlcVideoPlayer.SetVolume(0);
-        }
-
-        private void OnVolumeDown(object obj)
-        {
-            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume-10);
-        }
-
-        private void OnVolumeUp(object obj)
-        {
-            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume + 10);
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -71,6 +54,21 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             var uri = Android.Net.Uri.Parse(channelStr);
             _vlcVideoPlayer.Play(uri);
 
+        }
+
+        private void OnVolumeMute(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(0);
+        }
+
+        private void OnVolumeDown(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume - 10);
+        }
+
+        private void OnVolumeUp(object obj)
+        {
+            _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume + 10);
         }
 
         private void OnPlayerStateChanged(object sender, PlayerState state)
