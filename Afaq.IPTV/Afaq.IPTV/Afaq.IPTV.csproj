@@ -35,6 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\VitamioPlayerView.cs" />
+    <Compile Include="Controls\VlcPreviewer.cs" />
     <Compile Include="Controls\VlcPlayerView.cs" />
     <Compile Include="MobileApp.xaml.cs">
       <DependentUpon>MobileApp.xaml</DependentUpon>
@@ -81,6 +83,9 @@
     <Compile Include="Views\VideoPage.xaml.cs">
       <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WebBrowsingPage.xaml.cs">
+      <DependentUpon>WebBrowsingPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -120,6 +125,10 @@
     </Reference>
     <Reference Include="Realm, Version=0.76.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Realm.0.76.1\lib\portable-net45+sl5+wp8+wpa81+win8+monoandroid+Xamarin.iOS10+monotouch+Xamarin.Mac\Realm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rg.Plugins.Popup, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rg.Plugins.Popup.1.0.0-pre3\lib\portable-win+net45+wp8+win8+wpa81\Rg.Plugins.Popup.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -187,6 +196,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\TVMainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\WebBrowsingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

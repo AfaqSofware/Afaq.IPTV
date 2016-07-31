@@ -22,6 +22,8 @@
 
     public class Constants
     {
+        public const string AppPaused = "AppPaused";
+        public const string AppResumed = "AppResumed";
         public const string VolumeUp = "VolumeUp";
         public const string VolumeDown = "VolumeDown";
         public const string VolumeMute = "VolumeMute";
@@ -38,6 +40,10 @@
         public const string SearchKey = "SearchKey";
         public const string SettingsKey = "SettingsKey";
         public const string ReleasePlayer = "ReleasePlayer";
+        public const string ShowPlayer = "ShowPlayer";
         public const string LoginError = "LoginError";
+        public const string HidePlayer = "HidePlayer";
+        public const string StopPlayer = "StopPlayer";
+        public const string ResumePlayer = "ResumePlayer"; 
     }
 }

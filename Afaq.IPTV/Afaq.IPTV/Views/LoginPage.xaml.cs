@@ -1,6 +1,8 @@
-﻿using Afaq.IPTV.Helpers;
+﻿using System;
+using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
 using Prism.Navigation;
+using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -135,6 +137,30 @@ namespace Afaq.IPTV.Views
             if (parameters != null && (bool)parameters["IsAutoLogin"]) {
                 AutoLogin();
             } 
+        }
+
+        private void EntryUserName_OnCompleted(object sender, EventArgs e)
+        {
+            EntryPassword.Focus();
+        }
+
+        private void EntryPassword_OnCompleted(object sender, EventArgs e)
+        {
+            LoginButton.Focus();
+        }
+
+
+        private async void OnThreeMonthsSubsciptionTapped(object sender, EventArgs e)
+        {
+            var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&product_id=52");
+            await Navigation.PushPopupAsync(page);
+
+        }
+
+        private async void OnOneYearSubscriptionTapped(object sender, EventArgs e)
+        {
+            var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&product_id=61");                                           
+            await Navigation.PushPopupAsync(page);
         }
     }
 }

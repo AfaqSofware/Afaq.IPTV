@@ -15,24 +15,39 @@
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Username:" VerticalOptions="Center" />
-                        <Entry x:Name="EntryUserName" Text="{Binding Username}" Placeholder="Enter Username" />
+                        <Entry x:Name="EntryUserName" Text="{Binding Username}" Placeholder="Enter Username" Completed="EntryUserName_OnCompleted" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Password:" VerticalOptions="Center" />
                         <Entry x:Name="EntryPassword" Text="{Binding Password, Mode=TwoWay}"
                                Placeholder="Enter Password"
-                               IsPassword="True" />
+                               IsPassword="True" Completed="EntryPassword_OnCompleted" />
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Switch x:Name="SwitchRememberMe" IsToggled="{Binding IsRememberMe, Mode=TwoWay}" />
                         <Label Text="Remember Me" IsEnabled="{Binding IsRememberMe, Mode=TwoWay}" />
-
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Switch x:Name="SwitchAutoLogin" IsToggled="{Binding IsAutoLogin, Mode=TwoWay}" />
                         <Label Text="Auto Login" IsEnabled="{Binding IsAutoLogin, Mode=TwoWay}" />
                     </StackLayout>
+                  <StackLayout Spacing="20" Margin="20">
+                    <Frame x:Name="ThreeMonthsSubscription" OutlineColor="Lime"   Padding="0" HorizontalOptions="Start">
+                      <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnThreeMonthsSubsciptionTapped"></TapGestureRecognizer>
+                      </Frame.GestureRecognizers>
+                      <Label TextColor="Aqua"  Text="Subscribe for 3 months" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
+                    </Frame>
+                    <Frame x:Name="OneYearSubscription" OutlineColor="Lime"   Padding="0" HorizontalOptions="Start">
+                      <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOneYearSubscriptionTapped"></TapGestureRecognizer>
+                      </Frame.GestureRecognizers>
+                      <Label TextColor="Aqua"  Text="Subscribe for 1 year" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
+                    </Frame>
+                  </StackLayout>
+                 
+
                     <Button x:Name="LoginButton" Text="Login" Command="{Binding LoginCommand}" />
                 </StackLayout>
             </Frame>
@@ -42,6 +57,7 @@
             <StackLayout>
                 <ActivityIndicator IsRunning="{Binding IsSigningIn}" />
             </StackLayout>
+        
         </StackLayout>
 
     </StackLayout>

@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.Hardware;
+using Android.Media;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -74,8 +75,15 @@ namespace Afaq.IPTV.Droid
 
         protected override void OnPause()
         {
+
             base.OnPause();
-            MessagingCenter.Send<object>(this, "Paused");
+            MessagingCenter.Send<object>(this, Constants.AppPaused);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            MessagingCenter.Send<object>(this, Constants.AppResumed);
         }
 
         public override bool OnKeyUp(Keycode keyCode, KeyEvent e)

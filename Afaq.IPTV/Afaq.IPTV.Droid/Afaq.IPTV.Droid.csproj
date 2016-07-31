@@ -72,10 +72,6 @@
       <HintPath>..\..\packages\DotNetCross.Memory.Unsafe.0.2.2\lib\dotnet\DotNetCross.Memory.Unsafe.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Android.ExoPlayer.1.5.8\lib\MonoAndroid\ExoPlayer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="FormsViewGroup, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.0.107\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
       <Private>True</Private>
@@ -106,6 +102,14 @@
       <HintPath>..\..\packages\Realm.0.76.1\lib\MonoAndroid44\Realm.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Rg.Plugins.Popup, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rg.Plugins.Popup.1.0.0-pre3\lib\MonoAndroid\Rg.Plugins.Popup.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rg.Plugins.Popup.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rg.Plugins.Popup.1.0.0-pre3\lib\MonoAndroid\Rg.Plugins.Popup.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -118,16 +122,8 @@
       <HintPath>..\..\Lib\UXDivers.Artina.Player.Common.Droid.dll</HintPath>
     </Reference>
     <Reference Include="VlcXamarin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Android.VlcXamarin.3.0.0\lib\MonoAndroid\VlcXamarin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xam.Plugins.VideoPlayer, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.VideoPlayer.1.0.0-pre07\lib\monoandroid\Xam.Plugins.VideoPlayer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xam.Plugins.VideoPlayer.Droid, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.VideoPlayer.1.0.0-pre07\lib\monoandroid\Xam.Plugins.VideoPlayer.Droid.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\VlcXamarin.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
@@ -197,13 +193,10 @@
   <ItemGroup>
     <Compile Include="CustomRenderers\ExoPlayerViewRenderer.cs" />
     <Compile Include="CustomRenderers\ChannelPreviewerCustomRenderer.cs" />
+    <Compile Include="CustomRenderers\VitamioViewRenderer.cs" />
+    <Compile Include="CustomRenderers\VlcPreviewerRenderer.cs" />
     <Compile Include="CustomRenderers\VlcPlayerViewRenderer.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Players\ExoPlayer\DashRendererBuilder.cs" />
-    <Compile Include="Players\ExoPlayer\ExtractorRendererBuilder.cs" />
-    <Compile Include="Players\ExoPlayer\HlsRendererBuilder.cs" />
-    <Compile Include="Players\ExoPlayer\SmoothStreamingRendererBuilder.cs" />
-    <Compile Include="Players\ExoPlayer\VideoPlayer.cs" />
     <Compile Include="Players\VlcPlayer\VlcVideoPlayer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -213,7 +206,6 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <None Include="Xam.Plugins.VideoPlayer.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">

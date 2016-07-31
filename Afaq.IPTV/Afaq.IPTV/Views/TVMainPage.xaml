@@ -9,58 +9,63 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-      <Grid Grid.Column="0" BackgroundColor="Black">
-        <Grid.RowDefinitions>
-          <RowDefinition/>
-          <RowDefinition/>
-          <RowDefinition Height="12*"/>
-        </Grid.RowDefinitions>
-        <Entry Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}" Grid.Row="0" />
-        <StackLayout Orientation="Horizontal" Grid.Row="1" >
-          <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/96/Actions-go-previous-view-icon.png" Margin="20,0,0,0">
-            <Image.GestureRecognizers>
-              <TapGestureRecognizer Command="{Binding GetPreviousChannelListCommand}"/>
-            </Image.GestureRecognizers>
-          </Image>
+        <StackLayout Grid.Column="0" BackgroundColor="Black">
+            <Entry Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}" />
+            <StackLayout Orientation="Horizontal">
+                <Image
+                    Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/96/Actions-go-previous-view-icon.png"
+                    Margin="20,0,0,0" HeightRequest="30" WidthRequest="30">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GetPreviousChannelListCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
 
-          <Label Text="{Binding CurrentChannelList.Name}" FontSize="Large" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Margin="20,0,20,0" />
+                <Label Text="{Binding CurrentChannelList.Name}" FontSize="Large" VerticalOptions="Center"
+                       HorizontalOptions="CenterAndExpand" Margin="20,0,20,0" />
 
-          <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/96/Actions-go-next-view-icon.png" Margin="0,0,20,0">
-            <Image.GestureRecognizers>
-              <TapGestureRecognizer Command="{Binding GetNextChannelListCommand}" />
-            </Image.GestureRecognizers>
-          </Image>
+                <Image
+                    Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/96/Actions-go-next-view-icon.png"
+                    Margin="0,0,20,0" HeightRequest="30" WidthRequest="30">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GetNextChannelListCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+
+            <ListView x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
+                      ItemsSource="{Binding CurrentChannelList.Channels}"
+                      SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Grid.Row="2">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
 
-        <ListView x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
-                  ItemsSource="{Binding CurrentChannelList.Channels}"
-                  SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Grid.Row="2" >
-          <ListView.ItemTemplate>
-            <DataTemplate>
-              <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" />
-            </DataTemplate>
-          </ListView.ItemTemplate>
-        </ListView>
-      </Grid>
-       
+
+
         <Grid Grid.Column="1" BackgroundColor="Black">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="4*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <!--<Image Source="{Binding CurrentChannel.Logo}" Grid.Row="0" />-->
             <Frame x:Name="VideoFrame" OutlineColor="Aqua" BackgroundColor="Black" Padding="1" Grid.Row="1">
-                <controls:ChannelPreviewer AutoPlay="True" VideoSource="{Binding CurrentVideoSource}">
-                    <controls:ChannelPreviewer.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PlayCurrentChannelCommand}"/>
-                    </controls:ChannelPreviewer.GestureRecognizers>
-                </controls:ChannelPreviewer>
+                  <controls:VlcPreviewer IsHardwareDecoding="{Binding IsHardwareDecoding}" VideoSource="{Binding CurrentVideoSource}">
+                    <controls:VlcPreviewer.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PlayCurrentChannelCommand}" />
+                    </controls:VlcPreviewer.GestureRecognizers>
+                </controls:VlcPreviewer>
             </Frame>
+            <StackLayout Orientation="Horizontal" Grid.Row="2">
+                <Switch IsToggled="{Binding IsHardwareDecoding, Mode=TwoWay}"/> 
+                <Label Text="Hardware Decoding" IsEnabled="{Binding IsHardwareDecoding, Mode=TwoWay}" />
+            </StackLayout>
         </Grid>
-
+                   
     </Grid>
 </ContentPage>

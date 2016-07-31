@@ -12,6 +12,7 @@ namespace Afaq.IPTV.ViewModels
     {
         public IEventAggregator Aggregator { get; }
         private string _videoSource;
+        private bool _isHardwareDecoding;
 
         public VideoPageViewModel(IEventAggregator eventAggregator)
         {
@@ -29,6 +30,12 @@ namespace Afaq.IPTV.ViewModels
                 _videoSource = value;
                 OnPropertyChanged();
             }
+        }
+
+        public bool IsHardwareDecoding
+        {
+            get { return _isHardwareDecoding; }
+            set { SetProperty(ref _isHardwareDecoding,  value); }
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)

@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Android.Content;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Org.Videolan.Libvlc;
@@ -30,36 +28,26 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
         private PlayerState _playerState;
         private int _volume;
 
-        public VlcVideoPlayer(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-        {
-        }
 
         public VlcVideoPlayer(Context context) : base(context)
         {
-            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent,
-                ViewGroup.LayoutParams.WrapContent);
-            _libvlc = new LibVLCLibVLC();
-           
-            _mediaPlayer = new MediaPlayer(_libvlc);
-            _mediaPlayer.VLCVout.SetVideoView(this);
-            _mediaPlayer.VLCVout.AttachViews();
-            PlayerState = (PlayerState) _mediaPlayer.PlayerState;
-            Volume = 50; 
-            MonitorPlayerState();
-        }
+            try
+            {
+                LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent,
+                    ViewGroup.LayoutParams.WrapContent);
+                _libvlc = new LibVLCLibVLC(context);
 
-        public VlcVideoPlayer(Context context, IAttributeSet attrs) : base(context, attrs)
-        {
-        }
-
-        public VlcVideoPlayer(Context context, IAttributeSet attrs, int defStyleAttr)
-            : base(context, attrs, defStyleAttr)
-        {
-        }
-
-        public VlcVideoPlayer(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes)
-            : base(context, attrs, defStyleAttr, defStyleRes)
-        {
+                _mediaPlayer = new MediaPlayer(_libvlc);
+                _mediaPlayer.VLCVout.SetVideoView(this);
+                _mediaPlayer.VLCVout.AttachViews();
+                PlayerState = (PlayerState) _mediaPlayer.PlayerState;
+                Volume = 50;
+                MonitorPlayerState();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public int Volume
@@ -67,12 +55,14 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
             get { return _volume; }
             set
             {
-                if (value > 100 || value < 0) {
+                if (value > 100 || value < 0)
+                {
                     return;
                 }
                 _volume = value;
             }
         }
+
         public PlayerState PlayerState
         {
             get { return _playerState; }
@@ -105,77 +95,127 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
 
         public void Stop()
         {
-            if (IsDisposed)
+            try
             {
-                return;
+                if (IsDisposed)
+                {
+                    return;
+                }
+                _mediaPlayer?.Stop();
             }
-            _mediaPlayer?.Stop();
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void SetMedia(Uri media)
         {
-            if (IsDisposed)
+            try
             {
-                return;
+                if (IsDisposed)
+                {
+                    return;
+                }
+                if (_mediaPlayer == null) return;
+                _mediaPlayer.Media = new MediaLibVLC(_libvlc, media);
             }
-            if (_mediaPlayer == null) return;
-            _mediaPlayer.Media = new MediaLibVLC(_libvlc, media);
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void Play()
         {
-            if (IsDisposed)
+            try
             {
-                return;
+                if (IsDisposed)
+                {
+                    return;
+                }
+                _mediaPlayer.SetVolume(Volume);
+                _mediaPlayer?.Play();
             }
-            _mediaPlayer.SetVolume(Volume);
-            _mediaPlayer?.Play();
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void Play(Uri media)
         {
-            if (IsDisposed)
+            try
             {
-                return;
+                if (IsDisposed)
+                {
+                    return;
+                }
+                if (_mediaPlayer == null) return;
+                _mediaPlayer.Media = new MediaLibVLC(_libvlc, media);
+
+                Media = _mediaPlayer.Media;
+                Media.SetHWDecoderEnabled(true, true);
+                _latestUri = media;
+                SetVolume(Volume);
+                Play();
             }
-            if (_mediaPlayer == null) return;
-            _mediaPlayer.Media = new MediaLibVLC(_libvlc, media);
-           
-            Media = _mediaPlayer.Media;
-            _latestUri = media;
-            SetVolume(Volume);
-            Play();
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void SetVolume(int level)
         {
-            Volume = level;
-            _mediaPlayer.SetVolume(level);
+            try
+            {
+                Volume = level;
+                _mediaPlayer.SetVolume(level);
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void Release()
         {
-            if (IsDisposed)
+            try
             {
-                return;
-            }
-            if (_mediaPlayer == null || _mediaPlayer.IsReleased)
-            {
-                return;
-            }
+                if (IsDisposed)
+                {
+                    return;
+                }
+                if (_mediaPlayer == null || _mediaPlayer.IsReleased)
+                {
+                    return;
+                }
 
-            _mediaPlayer.Stop();
-            _mediaPlayer.VLCVout.DetachViews();
-            _mediaPlayer.Release();
-            _libvlc?.Release();
-            _libvlc = null;
-            IsDisposed = true;
+                _mediaPlayer.Stop();
+                _mediaPlayer.VLCVout.DetachViews();
+                _mediaPlayer.Release();
+                _libvlc?.Release();
+                _libvlc = null;
+                IsDisposed = true;
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         public void EventHardwareAccelerationError()
         {
-            Release();
-            Toast.MakeText(Context, "Error with hardware acceleration", ToastLength.Long).Show();
+            try
+            {
+                Release();
+                Toast.MakeText(Context, "Error with hardware acceleration", ToastLength.Long).Show();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Context, ex.Message, ToastLength.Long).Show();
+            }
         }
 
         private async void MonitorPlayerState()
@@ -193,6 +233,11 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
                 Stop();
                 Play(_latestUri);
             }
+        }
+
+        public void SetHardwareDecoding(bool isHardwareDecoing)
+        {
+            _media.SetHWDecoderEnabled(isHardwareDecoing, isHardwareDecoing);
         }
     }
 }

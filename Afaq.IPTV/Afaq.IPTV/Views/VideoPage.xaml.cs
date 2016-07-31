@@ -13,7 +13,7 @@ namespace Afaq.IPTV.Views
         public VideoPage()
         {
             InitializeComponent();
-            MessagingCenter.Subscribe<object>(this, "Paused", OnPaused);
+            MessagingCenter.Subscribe<object>(this, Constants.AppPaused, OnPaused);
 
         }
 
@@ -24,24 +24,8 @@ namespace Afaq.IPTV.Views
 
         private void VideoPage_OnDisappearing(object sender, EventArgs e)
         {
-            MessagingCenter.Unsubscribe<object>(this, "Paused");
+            MessagingCenter.Unsubscribe<object>(this, Constants.AppPaused);
             MessagingCenter.Send<object>(this, Constants.ReleasePlayer);
-        }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-
-            if (width > height)
-            {
-
-                VideoPlayer.Margin = new Thickness(0);
-            }
-            else
-            {
-                VideoPlayer.Margin = new Thickness(0, height/3, 0, height/3);
-            }
-
-            base.OnSizeAllocated(width, height);
         }
     }
 }

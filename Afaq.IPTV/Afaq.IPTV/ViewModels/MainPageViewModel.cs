@@ -25,6 +25,7 @@ namespace Afaq.IPTV.ViewModels
         private Channel _currentChannel;
         private string _currentVideoSource;
         private readonly IEventAggregator _eventAggregator;
+        private bool _isHardwareDecoding;
 
         public MainPageViewModel(IChannelService channelService, INavigationService navigationService, IEventAggregator eventAggregator)
         {
@@ -69,6 +70,13 @@ namespace Afaq.IPTV.ViewModels
                 PreviewChannel(value.CurrentSource.VideoSource);
             }
         }
+
+        public bool IsHardwareDecoding
+        {
+            get { return _isHardwareDecoding; }
+            set { SetProperty(ref _isHardwareDecoding, value); }
+        }
+
         public string CurrentVideoSource
         {
             get { return _currentVideoSource; }

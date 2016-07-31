@@ -14,26 +14,14 @@ namespace Afaq.IPTV.Views
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel; 
-            if (_viewModel == null)
-            {
-                return; 
-            }
-
-            MessagingCenter.Subscribe<object>(this, Constants.MoveUp, o => { _viewModel.MoveSelectionUp(); });
-            MessagingCenter.Subscribe<object>(this, Constants.MoveDown, o => { _viewModel.MoveSelectionDown(); });
-            MessagingCenter.Subscribe<object>(this, Constants.MoveLeft, OnMoveLeft);
-            MessagingCenter.Subscribe<object>(this, Constants.MoveRight, OnMoveRight);
-            MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { _viewModel.PlayCurrentChannelCommand.Execute(null); });
-            MessagingCenter.Subscribe<object>(this, Constants.DelKey, OnDelete);
-            MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
         }
 
         private void OnMoveRight(object o)
         {
             _viewModel.GetNextChannelListCommand.Execute(null);
             foreach (Channel channel in MyChannelList.ItemsSource) {
-                if (channel == _viewModel.CurrentChannel) {
-                    MyChannelList.ScrollTo(_viewModel.CurrentChannel, ScrollToPosition.Center, false);
+                if (channel == MyChannelList.SelectedItem) {
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
                     break;
                 }
             }
@@ -43,8 +31,8 @@ namespace Afaq.IPTV.Views
         {
             _viewModel.GetPreviousChannelListCommand.Execute(null);
             foreach (Channel channel in MyChannelList.ItemsSource) {
-                if (channel == _viewModel.CurrentChannel) {
-                    MyChannelList.ScrollTo(_viewModel.CurrentChannel, ScrollToPosition.Center, false);
+                if (channel == MyChannelList.SelectedItem) {
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
                     break;
                 }
             }
@@ -55,14 +43,57 @@ namespace Afaq.IPTV.Views
             _viewModel.CurrentChannelList.SearchKey += key;
             foreach (Channel channel in MyChannelList.ItemsSource)
             {
-                if (channel == _viewModel.CurrentChannel)
+                if (channel == MyChannelList.SelectedItem)
                 {
-                    MyChannelList.ScrollTo(_viewModel.CurrentChannel, ScrollToPosition.Center, false);
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
                     break; 
                 }
             }
         }
 
+        protected override void OnDisappearing()
+        {
+            MessagingCenter.Send<object>(this, Constants.HidePlayer);
+
+
+            MessagingCenter.Unsubscribe<object>(this, Constants.MoveUp);
+            MessagingCenter.Unsubscribe<object>(this, Constants.MoveDown);
+            MessagingCenter.Unsubscribe<object>(this, Constants.MoveLeft);
+            MessagingCenter.Unsubscribe<object>(this, Constants.MoveRight);
+            MessagingCenter.Unsubscribe<object>(this, Constants.EnterKey);
+            MessagingCenter.Unsubscribe<object>(this, Constants.DelKey);
+            MessagingCenter.Unsubscribe<object, string>(this, Constants.KeyEntered);
+            MessagingCenter.Unsubscribe<object>(this, Constants.AppPaused);
+            base.OnDisappearing();
+        }
+
+        protected override void OnAppearing()
+        {
+            MessagingCenter.Send<object>(this, Constants.ShowPlayer);
+
+            MessagingCenter.Subscribe<object>(this, Constants.MoveUp, o => { _viewModel.MoveSelectionUp(); });
+            MessagingCenter.Subscribe<object>(this, Constants.MoveDown, o => { _viewModel.MoveSelectionDown(); });
+            MessagingCenter.Subscribe<object>(this, Constants.MoveLeft, OnMoveLeft);
+            MessagingCenter.Subscribe<object>(this, Constants.MoveRight, OnMoveRight);
+            MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { _viewModel.PlayCurrentChannelCommand.Execute(MyChannelList.SelectedItem); });
+            MessagingCenter.Subscribe<object>(this, Constants.DelKey, OnDelete);
+            MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
+            MessagingCenter.Subscribe<object>(this, Constants.AppPaused, OnAppPaused);
+            MessagingCenter.Subscribe<object>(this, Constants.AppResumed, OnAppResumed);
+
+
+            base.OnAppearing();
+        }
+
+        private void OnAppResumed(object obj)
+        {
+            MessagingCenter.Send<object>(this, Constants.ShowPlayer);
+        }
+
+        private void OnAppPaused(object obj)
+        {
+            MessagingCenter.Send<object>(this, Constants.StopPlayer);
+        }
 
         private void OnDelete(object obj)
         {
@@ -74,9 +105,9 @@ namespace Afaq.IPTV.Views
             }
             foreach (Channel channel in MyChannelList.ItemsSource) 
             {
-                if (channel == _viewModel.CurrentChannel)
+                if (channel == MyChannelList.SelectedItem)
                 {
-                    MyChannelList.ScrollTo(_viewModel.CurrentChannel, ScrollToPosition.Center, false);
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
                     break;
                 }
             }

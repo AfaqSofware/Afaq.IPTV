@@ -19,7 +19,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
     {
         
         private VlcVideoPlayer _vlcVideoPlayer;
-
+        private Android.Net.Uri _uri; 
         public VlcPlayerViewRenderer()
         {
             RootView.SystemUiVisibility = StatusBarVisibility.Hidden;            
@@ -33,6 +33,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
 
             if ((vlcPlayerView == null) || (e.OldElement != null)) return;
             _vlcVideoPlayer = new VlcVideoPlayer(Context);
+            
             _vlcVideoPlayer.PlayerStateChanged += OnPlayerStateChanged;
             MessagingCenter.Subscribe<object>(this, Constants.ReleasePlayer, OnRelease);
             MessagingCenter.Subscribe<object>(this, Constants.VolumeUp, OnVolumeUp);
@@ -41,18 +42,29 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             SetNativeControl(_vlcVideoPlayer);
         }
 
+      
+
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName != "VideoSource") return;
-            var channelStr = ((VlcPlayerView) sender).VideoSource;
-            if (channelStr.Contains("\r"))
+            if (e.PropertyName == "VideoSource")
             {
-                channelStr = channelStr.Remove(channelStr.IndexOf("\r"), "\r".Length); 
+                var channelStr = ((VlcPlayerView)sender).VideoSource;
+                if (channelStr.Contains("\r")) {
+                    channelStr = channelStr.Remove(channelStr.IndexOf("\r"), "\r".Length);
+                }
+                _uri = Android.Net.Uri.Parse(channelStr);
+                _vlcVideoPlayer.Play(_uri);
             }
-            var uri = Android.Net.Uri.Parse(channelStr);
-            _vlcVideoPlayer.Play(uri);
+            if (e.PropertyName == "IsHardwareDecoding")
+            {
+                var isHardwareDecoing = ((VlcPlayerView)sender).IsHardwareDecoding;
+                _vlcVideoPlayer.Stop();
+                _vlcVideoPlayer.SetHardwareDecoding(isHardwareDecoing);
+                _vlcVideoPlayer.Play(_uri);
+            }
+
 
         }
 
@@ -76,9 +88,11 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             Toast.MakeText(Context, $"{state}", ToastLength.Short).Show();
         }
 
+
         private void OnRelease(object obj)
         {
             _vlcVideoPlayer.Release();
+
             _vlcVideoPlayer.PlayerStateChanged -= OnPlayerStateChanged;
             MessagingCenter.Unsubscribe<object>(this, Constants.ReleasePlayer);
             MessagingCenter.Unsubscribe<object>(this, Constants.VolumeUp);
