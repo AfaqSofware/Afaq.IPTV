@@ -37,7 +37,7 @@ namespace Afaq.IPTV.Droid.Player
         {
             LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent,
                 ViewGroup.LayoutParams.WrapContent);
-            _libvlc = new LibVLCLibVLC();
+            _libvlc = new LibVLCLibVLC(Context);
             _mediaPlayer = new MediaPlayer(_libvlc);
             _mediaPlayer.VLCVout.SetVideoView(this);
             _mediaPlayer.VLCVout.AttachViews();

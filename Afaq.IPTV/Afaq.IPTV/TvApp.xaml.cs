@@ -16,6 +16,8 @@ namespace Afaq.IPTV
 {
     public partial class TvApp 
     {
+
+
         protected override void OnInitialized()
         {
             InitializeComponent();

@@ -72,6 +72,10 @@
       <HintPath>..\..\packages\DotNetCross.Memory.Unsafe.0.2.2\lib\dotnet\DotNetCross.Memory.Unsafe.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Android.ExoPlayer.1.5.8\lib\MonoAndroid\ExoPlayer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FormsViewGroup, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.0.107\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
       <Private>True</Private>
@@ -197,6 +201,11 @@
     <Compile Include="CustomRenderers\VlcPreviewerRenderer.cs" />
     <Compile Include="CustomRenderers\VlcPlayerViewRenderer.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Players\ExoPlayer\DashRendererBuilder.cs" />
+    <Compile Include="Players\ExoPlayer\ExtractorRendererBuilder.cs" />
+    <Compile Include="Players\ExoPlayer\HlsRendererBuilder.cs" />
+    <Compile Include="Players\ExoPlayer\SmoothStreamingRendererBuilder.cs" />
+    <Compile Include="Players\ExoPlayer\VideoPlayer.cs" />
     <Compile Include="Players\VlcPlayer\VlcVideoPlayer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

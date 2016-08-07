@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.Media;
-using Android.Net;
 using Com.Google.Android.Exoplayer;
 using Com.Google.Android.Exoplayer.Audio;
 using Com.Google.Android.Exoplayer.Extractor;
 using Com.Google.Android.Exoplayer.Text;
 using Com.Google.Android.Exoplayer.Upstream;
+using Com.Google.Android.Exoplayer.Util;
+using Uri = Android.Net.Uri;
 
 namespace Afaq.IPTV.Droid.Players.ExoPlayer
 {
@@ -47,9 +50,26 @@ namespace Afaq.IPTV.Droid.Players.ExoPlayer
 		public void BuildRenderers(VideoPlayer player)
 		{
 			var allocator = new DefaultAllocator(BufferSegmentSize);
+		    var codecSelector = MediaCodecSelector.Default;
+            List<DecoderInfo> DecoderInfos = new List<DecoderInfo>();
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoMp4,false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.ApplicationMp4, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoH263, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoH264, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoH265, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoMp4v, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoMpeg2, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoUnknown, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoVp8, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoVp9, false));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.VideoWebm, true));
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.BaseTypeVideo, false));
 
-			// Build the video and audio renderers.
-			var bandwidthMeter = new DefaultBandwidthMeter(player.MainHandler, null);
+            DecoderInfos.Add(MediaCodecUtil.GetDecoderInfo(MimeTypes.ApplicationMp4, true));
+
+            // Build the video and audio renderers.
+
+            var bandwidthMeter = new DefaultBandwidthMeter(player.MainHandler, null);
 			var dataSource = new DefaultUriDataSource(_context, bandwidthMeter, _userAgent);
 			var sampleSource = new ExtractorSampleSource(_uri
                 , dataSource
@@ -88,4 +108,32 @@ namespace Afaq.IPTV.Droid.Players.ExoPlayer
 			// Do nothing.
 		}
 	}
+
+    public class CustomMediaCodecSelector : IMediaCodecSelector
+    {
+        public void Dispose()
+        {
+          //  throw new NotImplementedException();
+        }
+
+        public IntPtr Handle { get; }
+        public DecoderInfo GetDecoderInfo(string mimeType, bool requiresSecureDecoder)
+        {
+            if (!mimeType.Equals("video/mp4")) {
+                // Default behavior.
+                return MediaCodecUtil.GetDecoderInfo(mimeType, requiresSecureDecoder);
+            }
+            var allDecoders = MediaCodecUtil.GetDecoderInfo(mimeType, requiresSecureDecoder);
+            // At this point you have all a list of all decoders that you can use on the device. The first one in the list is the default one.
+            // If the list has more than one entry, try picking the second one, which will likely be a software decoder. If the list has only
+            // one, you're out of luck.
+            return allDecoders;
+        }
+
+        public string PassthroughDecoderName { get; }
+
+
+
+
+    }
 }

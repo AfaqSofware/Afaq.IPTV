@@ -11,10 +11,11 @@ namespace Afaq.IPTV
 {
     public partial class MobileApp
     {
+
         protected override void OnInitialized()
         {
             InitializeComponent();
-
+          
             NavigationService.NavigateAsync("LoginPage", new NavigationParameters { { "IsAutoLogin", true } });
         }
 

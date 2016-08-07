@@ -67,6 +67,7 @@ namespace Afaq.IPTV.ViewModels
             {
                 if (_currentChannel == value) return; 
                 SetProperty(ref _currentChannel, value);
+
                 PreviewChannel(value.CurrentSource.VideoSource);
             }
         }

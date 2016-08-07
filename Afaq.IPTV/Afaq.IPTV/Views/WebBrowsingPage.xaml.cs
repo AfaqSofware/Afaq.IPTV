@@ -29,17 +29,13 @@ namespace Afaq.IPTV.Views
 
         protected override bool OnBackButtonPressed()
         {
-            //if (WebView.CanGoBack) {
-            //    WebView.GoBack();
-            //    return true;
-            //}
+            if (MyWebView.CanGoBack) {
+                MyWebView.GoBack();
+                return true;
+            }
 
             return base.OnBackButtonPressed();
         }
 
-        private void OnClose(object sender, EventArgs e)
-        {
-            PopupNavigation.PopAsync();
-        }
     }
 }

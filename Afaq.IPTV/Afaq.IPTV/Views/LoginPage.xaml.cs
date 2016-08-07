@@ -26,6 +26,7 @@ namespace Afaq.IPTV.Views
         protected override void OnAppearing()
         {
             _viewModel.CanLogin = true;
+            labelSerial.Text =  Application.Current.Properties["Serial"].ToString();
             if (!LoginButton.IsFocused)
             {
                 LoginButton.Focus();
@@ -134,8 +135,12 @@ namespace Afaq.IPTV.Views
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            if (parameters != null && (bool)parameters["IsAutoLogin"]) {
-                AutoLogin();
+            if (parameters != null ) {
+                if ((bool)parameters["IsAutoLogin"])
+                {
+                    AutoLogin();
+                }
+            
             } 
         }
 
@@ -160,6 +165,12 @@ namespace Afaq.IPTV.Views
         private async void OnOneYearSubscriptionTapped(object sender, EventArgs e)
         {
             var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&product_id=61");                                           
+            await Navigation.PushPopupAsync(page);
+        }
+
+        private async void OnAddSubscriptionTapped(object sender, EventArgs e)
+        {
+            var page = new SubscriptionCodePage();
             await Navigation.PushPopupAsync(page);
         }
     }

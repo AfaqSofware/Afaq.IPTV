@@ -7,12 +7,11 @@
              x:Class="Afaq.IPTV.Views.LoginPage">
     <StackLayout x:Name="outerStackLayout" HorizontalOptions="Center" VerticalOptions="Center">
 
-        <Image Source="https://s19.postimg.org/ph9g2fjhf/a1_tv.png" HeightRequest="300" WidthRequest="300"
-               Margin="0,10,0,0" />
+        <Image Source="https://s19.postimg.org/ph9g2fjhf/a1_tv.png" HeightRequest="200" WidthRequest="200"/>
         <StackLayout>
-            <Frame OutlineColor="Silver" Padding="20">
+            <Frame OutlineColor="Silver" >
 
-                <StackLayout>
+                <StackLayout Spacing="0">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Username:" VerticalOptions="Center" />
                         <Entry x:Name="EntryUserName" Text="{Binding Username}" Placeholder="Enter Username" Completed="EntryUserName_OnCompleted" />
@@ -32,25 +31,38 @@
                         <Switch x:Name="SwitchAutoLogin" IsToggled="{Binding IsAutoLogin, Mode=TwoWay}" />
                         <Label Text="Auto Login" IsEnabled="{Binding IsAutoLogin, Mode=TwoWay}" />
                     </StackLayout>
-                  <StackLayout Spacing="20" Margin="20">
-                    <Frame x:Name="ThreeMonthsSubscription" OutlineColor="Lime"   Padding="0" HorizontalOptions="Start">
+                  <StackLayout Spacing="20" Margin="20" Orientation="Horizontal">
+                    <Frame x:Name="ThreeMonthsSubscription"  Padding="0" HorizontalOptions="StartAndExpand">
                       <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnThreeMonthsSubsciptionTapped"></TapGestureRecognizer>
                       </Frame.GestureRecognizers>
-                      <Label TextColor="Aqua"  Text="Subscribe for 3 months" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
+                      <Label TextColor="Aqua"  Text="3 months" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
                     </Frame>
-                    <Frame x:Name="OneYearSubscription" OutlineColor="Lime"   Padding="0" HorizontalOptions="Start">
+                    
+                    <Frame x:Name="OneYearSubscription"   Padding="0" HorizontalOptions="End">
                       <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnOneYearSubscriptionTapped"></TapGestureRecognizer>
                       </Frame.GestureRecognizers>
-                      <Label TextColor="Aqua"  Text="Subscribe for 1 year" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
+                      <Label TextColor="Aqua"  Text=" 1 year" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
                     </Frame>
                   </StackLayout>
                  
 
                     <Button x:Name="LoginButton" Text="Login" Command="{Binding LoginCommand}" />
+                  <Frame x:Name="AddSubscription"   Padding="0" HorizontalOptions="Center" Margin="0,10,0,0">
+                    <Frame.GestureRecognizers>
+                      <TapGestureRecognizer Tapped="OnAddSubscriptionTapped"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <Label TextColor="Aqua"  Text="Add Subsciption Code" FontAttributes="Bold" HorizontalOptions="Center" Margin="0"/>
+                  </Frame>
+                  
                 </StackLayout>
             </Frame>
+          <StackLayout Orientation="Horizontal">
+                 <Label Text="Device Serial:"/> 
+                 <Label x:Name="labelSerial"/>
+          </StackLayout>
+     
             <StackLayout IsVisible="{Binding HasStatus}">
                 <Label Text="{Binding StatusMessage}" />
             </StackLayout>

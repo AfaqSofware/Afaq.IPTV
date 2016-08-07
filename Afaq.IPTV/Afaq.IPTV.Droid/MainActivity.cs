@@ -42,10 +42,11 @@ namespace Afaq.IPTV.Droid
             else
             {
                 _isTV = false; 
-                _application = new MobileApp();
+                _application = new MobileApp();              
             }
 
             _container = _application.Container;
+            _application.Properties["Serial"] = Build.Serial;
             LoadApplication(_application);
             _eventAggregator = _container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<CinemaModeEvent>().Subscribe(OnCinemaModeEvent);

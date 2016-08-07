@@ -70,12 +70,16 @@
     <Compile Include="ViewModels\IVideoPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
+    <Compile Include="ViewModels\SubscriptionCodePageVIewModel.cs" />
     <Compile Include="ViewModels\VideoPageViewModel.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PhoneMainPage.xaml.cs">
       <DependentUpon>PhoneMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubscriptionCodePage.xaml.cs">
+      <DependentUpon>SubscriptionCodePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TVMainPage.xaml.cs">
       <DependentUpon>TVMainPage.xaml</DependentUpon>
@@ -202,6 +206,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\WebBrowsingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SubscriptionCodePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
