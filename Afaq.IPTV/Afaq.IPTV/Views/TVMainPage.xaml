@@ -37,7 +37,7 @@
 
             <ListView x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
                       ItemsSource="{Binding CurrentChannelList.Channels}"
-                      SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Grid.Row="2">
+                      SelectedItem="{Binding CurrentChannelList.CurrentChannel, Mode=TwoWay}" Grid.Row="2">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" />
@@ -55,7 +55,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Frame x:Name="VideoFrame" OutlineColor="Aqua" BackgroundColor="Black" Padding="1" Grid.Row="1">
-                  <controls:VlcPreviewer IsHardwareDecoding="{Binding IsHardwareDecoding}" VideoSource="{Binding CurrentVideoSource}">
+                  <controls:VlcPreviewer IsHardwareDecoding="{Binding IsHardwareDecoding}" VideoSource="{Binding CurrentChannelList.CurrentVideoSource}">
                     <controls:VlcPreviewer.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding PlayCurrentChannelCommand}" />
                     </controls:VlcPreviewer.GestureRecognizers>

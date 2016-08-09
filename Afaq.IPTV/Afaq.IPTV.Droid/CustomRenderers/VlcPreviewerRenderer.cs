@@ -65,6 +65,10 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if (e.PropertyName == "VideoSource")
             {
                 var channelStr = ((VlcPreviewer) sender).VideoSource;
+                if (string.IsNullOrEmpty(channelStr) )
+                {
+                    return;
+                }
                 if (channelStr.Contains("\r"))
                 {
                     channelStr = channelStr.Remove(channelStr.IndexOf("\r"), "\r".Length);

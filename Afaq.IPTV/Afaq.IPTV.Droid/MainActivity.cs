@@ -93,6 +93,8 @@ namespace Afaq.IPTV.Droid
             {
                 switch (e.KeyCode) {
                     case Keycode.DpadUp:
+                    case Keycode.ChannelDown:
+                    case Keycode.ChannelUp:
                     case Keycode.DpadDown:
                     case Keycode.DpadLeft:
                     case Keycode.DpadRight:

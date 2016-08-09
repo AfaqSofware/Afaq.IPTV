@@ -9,7 +9,7 @@ namespace Afaq.IPTV.ViewModels
     public interface IMainPageViewModel
     {
         List<ChannelList> ChannelLists { get; set; }
-        Channel CurrentChannel { get; set; }
+     //   Channel CurrentChannel { get; set; }
         ChannelList CurrentChannelList { get; set; }
 
         void OnNavigatedFrom(NavigationParameters parameters);

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Afaq.IPTV.Helpers;
 using Prism.Mvvm;
 
@@ -18,6 +19,7 @@ namespace Afaq.IPTV.Models
         private string _searchKey;
         private readonly ChannelListHelper _channelListHelper;
         private string _currentVideoSource;
+        private bool _isLogoVisible;
 
         #endregion
 
@@ -31,12 +33,16 @@ namespace Afaq.IPTV.Models
         {
             _channelListHelper = new ChannelListHelper();
             Channels = new ObservableCollection<Channel>();
-            BackupChannels = new ObservableCollection<Channel>();
+            FullChannels = new ObservableCollection<Channel>();
         }
 
         #region Properties
 
-
+        public bool IsLogoVisible
+        {
+            get { return _isLogoVisible; }
+            set { SetProperty(ref _isLogoVisible, value); }
+        }
 
         public Channel CurrentChannel
         {
@@ -45,8 +51,8 @@ namespace Afaq.IPTV.Models
             {
                 if (Equals(value, _currentChannel)) return;
                 _currentChannel = value;
-                CurrentVideoSource = value.CurrentSource.VideoSource;
                 OnPropertyChanged();
+                PreviewChannel(value.CurrentSource.VideoSource);
             }
         }
 
@@ -82,7 +88,7 @@ namespace Afaq.IPTV.Models
             }
         }
 
-        public ObservableCollection<Channel> BackupChannels { get; set; }
+        public ObservableCollection<Channel> FullChannels { get; set; }
 
         public string SearchKey
         {
@@ -90,7 +96,7 @@ namespace Afaq.IPTV.Models
             set
             {
                 if (value == null) return;
-                Channels = _channelListHelper.GetChannels(value, BackupChannels);
+                Channels = _channelListHelper.GetChannels(value, FullChannels);
                 _searchKey = value;
                 OnPropertyChanged();
             }
@@ -137,6 +143,20 @@ namespace Afaq.IPTV.Models
         public void PlaySelectedChannel()
         {
             ChannelChanged?.Invoke(this, CurrentChannel);
+        }
+
+        private async void PreviewChannel(string channelPath)
+        {
+            IsLogoVisible = true;
+            await Task.Delay(500); //This delay will prevent previewing the channel when the channel is changed. This will give the user a chance to move quickly between channels 
+            if (channelPath == CurrentChannel.CurrentSource.VideoSource) {
+                System.Diagnostics.Debug.WriteLine("### Playing Channel ###");
+                CurrentVideoSource = channelPath;
+                await Task.Delay(1000);
+                IsLogoVisible = false; 
+
+            }
+
         }
     }
 }

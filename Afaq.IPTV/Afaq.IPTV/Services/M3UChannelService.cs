@@ -51,7 +51,7 @@ namespace Afaq.IPTV.Services
                     channel.Logo = new Uri(playlistTrack.Information.Logo);
                 }
                 allChanelsList.Channels.Add(channel);
-                allChanelsList.BackupChannels.Add(channel);
+                allChanelsList.FullChannels.Add(channel);
             }
 
             #endregion
@@ -76,7 +76,7 @@ namespace Afaq.IPTV.Services
                     foreach (var channel in channelList.Value)
                     {
                         otherChannelsList.Channels.Add(channel);
-                        otherChannelsList.BackupChannels.Add(channel);
+                        otherChannelsList.FullChannels.Add(channel);
                     }
                 }
                 else
@@ -85,7 +85,7 @@ namespace Afaq.IPTV.Services
                     {
                         Name = channelList.Key,
                         Channels = new ObservableCollection<Channel>(channelList.Value),
-                        BackupChannels = new ObservableCollection<Channel>(channelList.Value)
+                        FullChannels = new ObservableCollection<Channel>(channelList.Value)
                     });
                 }
             }

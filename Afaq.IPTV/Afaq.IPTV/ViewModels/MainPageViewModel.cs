@@ -22,7 +22,6 @@ namespace Afaq.IPTV.ViewModels
         private readonly IChannelService _channelService;
         private readonly INavigationService _navigationService;
         private List<ChannelList> _channelLists;
-        private Channel _currentChannel;
         private string _currentVideoSource;
         private readonly IEventAggregator _eventAggregator;
         private bool _isHardwareDecoding;
@@ -60,18 +59,6 @@ namespace Afaq.IPTV.ViewModels
         }
 
 
-        public Channel CurrentChannel
-        {
-            get { return _currentChannel; }
-            set
-            {
-                if (_currentChannel == value) return; 
-                SetProperty(ref _currentChannel, value);
-
-                PreviewChannel(value.CurrentSource.VideoSource);
-            }
-        }
-
         public bool IsHardwareDecoding
         {
             get { return _isHardwareDecoding; }
@@ -89,35 +76,35 @@ namespace Afaq.IPTV.ViewModels
 
         public void MoveSelectionDown()
         {
-            var index = CurrentChannelList.Channels.IndexOf(CurrentChannel);
+            var index = CurrentChannelList.Channels.IndexOf(CurrentChannelList.CurrentChannel);
             if (index == -1)
             {
                 if (CurrentChannelList.Channels.Any())
                 {
-                    CurrentChannel = CurrentChannelList.Channels.First();
+                    CurrentChannelList.CurrentChannel = CurrentChannelList.Channels.First();
                     return; 
                 }
             }
             if (index < CurrentChannelList.Channels.Count - 1)
             {
-                CurrentChannel = CurrentChannelList.Channels[index + 1];
+                CurrentChannelList.CurrentChannel = CurrentChannelList.Channels[index + 1];
             }
         }
 
         public void MoveSelectionUp()
         {
-            var index = CurrentChannelList.Channels.IndexOf(CurrentChannel);
+            var index = CurrentChannelList.Channels.IndexOf(CurrentChannelList.CurrentChannel);
             if (index == -1)
             {
                 if (CurrentChannelList.Channels.Any())
                 {
-                    CurrentChannel = CurrentChannelList.Channels.First();
+                    CurrentChannelList.CurrentChannel = CurrentChannelList.Channels.First();
                     return;
                 }
             }
             if (index > 0)
             {
-                CurrentChannel = CurrentChannelList.Channels[index - 1];
+                CurrentChannelList.CurrentChannel = CurrentChannelList.Channels[index - 1];
             }
         }
 
@@ -139,17 +126,6 @@ namespace Afaq.IPTV.ViewModels
                 CurrentChannelList = _channelLists[0];
             }
     
-
-            //// subscribing to the event form all the channelLists                                       
-            //foreach (var channelList in _channelLists) {
-            //    channelList.ChannelChanged += OnChannelChanged;
-            //}
-
-
-            //    //    if (!parameters.ContainsKey("channels")) return;
-
-            //    //    var data = (string) parameters["channels"];
-            //    //    var result = await _channelService.GetAllChannelsAsync(data);
 
         }
 
@@ -196,20 +172,12 @@ namespace Afaq.IPTV.ViewModels
             }
         }
 
-        private void PlayChannel(Channel channel)
+        private void PlayChannel(Channel channelList)
         {
-            NavigationParameters channelParameters;
-            if (channel !=null) {
-                channelParameters = new NavigationParameters { { "channel", channel } };
-                _navigationService.NavigateAsync("VideoPage", channelParameters);
-            }
-            else
-            {
-                if (_currentChannel == null) return;
-                channelParameters = new NavigationParameters { { "channel", _currentChannel } };
-                _navigationService.NavigateAsync("VideoPage", channelParameters);
-            }
-           
+            var navigationParameters = new NavigationParameters { { "channelList", _currentChannelList } };
+            _navigationService.NavigateAsync("VideoPage", navigationParameters);
+
+     
         }
 
         #endregion
@@ -217,7 +185,7 @@ namespace Afaq.IPTV.ViewModels
         private async void PreviewChannel(string channelPath)
         {
             await Task.Delay(1000);
-            if (channelPath == CurrentChannel.CurrentSource.VideoSource)
+            if (channelPath == CurrentChannelList.CurrentChannel.CurrentSource.VideoSource)
             {
                 System.Diagnostics.Debug.WriteLine("### Playing Channel ###");
                 CurrentVideoSource = channelPath;
@@ -234,69 +202,3 @@ namespace Afaq.IPTV.ViewModels
         }
     }
 }
-
-
-//public class MainPageViewModel : BindableBase, INavigationAware, IMainPageViewModel
-//{
-//    //private readonly IChannelService _channelService;
-
-//    //private ObservableCollection<ChannelList> _channelLists;
-
-
-//    //public MainPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator,
-//    //    IChannelService channelService)
-//    //{
-//    //    NavigationService = navigationService;
-//    //    Aggregator = eventAggregator;
-//    //    _channelService = channelService;
-//    //}
-
-//    //public INavigationService NavigationService { get; }
-//    //public IEventAggregator Aggregator { get; }
-
-//    //public ObservableCollection<ChannelList> ChannelLists
-//    //{
-//    //    get { return _channelLists; }
-//    //    set
-//    //    {
-//    //        if (Equals(value, _channelLists)) return;
-//    //        _channelLists = value;
-//    //        OnPropertyChanged();
-//    //    }
-//    //}
-
-//    //public string CurrentListName { get; set; }
-
-//    //public void OnNavigatedFrom(NavigationParameters parameters)
-//    //{
-
-//    //}
-
-
-//    //public async void OnNavigatedTo(NavigationParameters parameters)
-//    //{
-
-//    //    if (!parameters.ContainsKey("channels")) return;
-
-//    //    var data = (string) parameters["channels"];
-//    //    var result = await _channelService.GetAllChannelsAsync(data);
-//    //    ChannelLists = new ObservableCollection<ChannelList>(result);
-
-//    //    // subscribing to the event form all the channelLists                                       
-//    //    foreach (var channelList in ChannelLists)
-//    //    {
-//    //        channelList.ChannelChanged += OnChannelChanged;
-//    //    }
-//    //}
-
-
-//    //private void OnChannelChanged(object sender, Channel channel)
-//    //{
-//    //    var channelParameters = new NavigationParameters();
-//    //    if (channel == null) return;
-//    //    channelParameters.Add("channel", channel);
-//    //    NavigationService.NavigateAsync("VideoPage", channelParameters);
-//    //}
-
-
-//}

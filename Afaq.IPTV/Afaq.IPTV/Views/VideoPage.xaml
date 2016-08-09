@@ -12,16 +12,10 @@
                     iOS="0, 20, 0, 0" />
     </ContentPage.Padding>
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="10*"/>
-      <RowDefinition/>
-    </Grid.RowDefinitions>
-    <controls:VlcPlayerView x:Name="VideoPlayer" VideoSource="{Binding VideoSource}" IsHardwareDecoding="{Binding IsHardwareDecoding}"  Grid.Row="0"/>
-    <StackLayout Orientation="Horizontal" Grid.Row="1">
-      <Switch IsToggled="{Binding IsHardwareDecoding, Mode=TwoWay}"/>
-      <Label Text="Hardware Decoding" IsEnabled="{Binding IsHardwareDecoding, Mode=TwoWay}" />
-    </StackLayout>
+
+    <controls:VlcPlayerView x:Name="VideoPlayer" VideoSource="{Binding CurrentChannelList.CurrentVideoSource}"/>
+    <Label Text="{Binding CurrentChannelList.CurrentChannel.Name}" TextColor="White" BackgroundColor="Black" FontSize="50" Margin="10" IsVisible="{Binding CurrentChannelList.IsLogoVisible}" HorizontalOptions="Start" VerticalOptions="Start"/>
+
   </Grid>
 
-  <!--<controls:ExoPlayerView x:Name="VideoPlayer" VideoSource="{Binding VideoSource}" Margin="0,0,0,20" />-->
 </ContentPage>

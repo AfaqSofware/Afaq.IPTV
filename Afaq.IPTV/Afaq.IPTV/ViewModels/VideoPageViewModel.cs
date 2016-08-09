@@ -1,63 +1,65 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Afaq.IPTV.Events;
 using Afaq.IPTV.Models;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
-using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
     public class VideoPageViewModel : BindableBase, INavigationAware, IVideoPageViewModel
     {
-        public IEventAggregator Aggregator { get; }
-        private string _videoSource;
-        private bool _isHardwareDecoding;
+        private ChannelList _currentChannelList;
+        private bool _isLogoVisible;
+
 
         public VideoPageViewModel(IEventAggregator eventAggregator)
         {
             Aggregator = eventAggregator;
-
-            MessagingCenter.Subscribe<MainPageViewModel, Channel>(this, "ChannelChanged", OnChannelChanged);
         }
 
-        public string VideoSource
+        public bool IsLogoVisible
         {
-            get { return _videoSource; }
-            set
-            {
-                if (Equals(value, _videoSource)) return;
-                _videoSource = value;
-                OnPropertyChanged();
-            }
+            get { return _isLogoVisible; }
+            set { SetProperty(ref _isLogoVisible, value); }
         }
 
-        public bool IsHardwareDecoding
+        public IEventAggregator Aggregator { get; }
+
+        public ChannelList CurrentChannelList
         {
-            get { return _isHardwareDecoding; }
-            set { SetProperty(ref _isHardwareDecoding,  value); }
+            get { return _currentChannelList; }
+            set { SetProperty(ref _currentChannelList, value); }
         }
+
 
         public void OnNavigatedFrom(NavigationParameters parameters)
         {
-
         }
 
-        public void OnNavigatedTo(NavigationParameters parameters)
+        public async void OnNavigatedTo(NavigationParameters parameters)
         {
             Aggregator.GetEvent<CinemaModeEvent>().Publish(true); //Turn on Cinema mode 
-           
 
-            if (parameters.ContainsKey("channel")) {
-                VideoSource = ((Channel)parameters["channel"]).CurrentSource.VideoSource.ToString();
+
+            if (parameters.ContainsKey("channelList"))
+            {
+                CurrentChannelList = (ChannelList) parameters["channelList"];
+                CurrentChannelList.IsLogoVisible = true;
+                await Task.Delay(2000);
+                CurrentChannelList.IsLogoVisible = false;
             }
         }
 
-
-
-        private void OnChannelChanged(MainPageViewModel arg1, Channel newChannel)
+        public void MoveSelectionUp()
         {
-            VideoSource = newChannel.CurrentSource.VideoSource.ToString();
+           _currentChannelList.MoveSelectionUp(null);
+        }
+
+        public void MoveSelectionDown()
+        {
+            _currentChannelList.MoveSelectionDown(null);
         }
     }
+  
 }
