@@ -9,11 +9,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <StackLayout Grid.Column="0" BackgroundColor="Black">
-            <Entry Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}" />
+            <!--<Entry Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}" />-->
+          <SearchBar Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}"/>
             <StackLayout Orientation="Horizontal">
                 <Image
                     Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/96/Actions-go-previous-view-icon.png"
@@ -61,10 +62,10 @@
                     </controls:VlcPreviewer.GestureRecognizers>
                 </controls:VlcPreviewer>
             </Frame>
-            <StackLayout Orientation="Horizontal" Grid.Row="2">
+            <!--<StackLayout Orientation="Horizontal" Grid.Row="2">
                 <Switch IsToggled="{Binding IsHardwareDecoding, Mode=TwoWay}"/> 
                 <Label Text="Hardware Decoding" IsEnabled="{Binding IsHardwareDecoding, Mode=TwoWay}" />
-            </StackLayout>
+            </StackLayout>-->
         </Grid>
                    
     </Grid>

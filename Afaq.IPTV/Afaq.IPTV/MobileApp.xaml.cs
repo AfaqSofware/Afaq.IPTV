@@ -21,6 +21,7 @@ namespace Afaq.IPTV
 
         protected override void RegisterTypes()
         {
+            Container.RegisterType<IDbService, RealmDbService>();
             Container.RegisterType<INavigationService, UnityPageNavigationService>(); 
             Container.RegisterType<IMainPageViewModel, MainPageViewModel>();
             Container.RegisterType<IAuthenticationService, AuthenticationService>();

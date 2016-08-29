@@ -33,11 +33,9 @@ namespace Afaq.IPTV.ViewModels
             _eventAggregator = eventAggregator;
             GetNextChannelListCommand = new DelegateCommand(GetNextChannelList);
             GetPreviousChannelListCommand = new DelegateCommand(GetPreviousChannelList);
-            PlayCurrentChannelCommand = new DelegateCommand<Channel>(PlayChannel);
+            PlayCurrentChannelCommand = new DelegateCommand(PlayChannel).ObservesProperty(()=>CanPlay);
             
         }
-
-       
 
         public List<ChannelList> ChannelLists
         {
@@ -114,13 +112,11 @@ namespace Afaq.IPTV.ViewModels
         {
         }
 
-        public async void OnNavigatedTo(NavigationParameters parameters)
+        public void OnNavigatedTo(NavigationParameters parameters)
         {
             if (!parameters.ContainsKey("channels")) return;
 
-            var data = (string) parameters["channels"];
-            var result = await _channelService.GetAllChannelsAsync(data);
-            ChannelLists = new List<ChannelList>(result);
+            ChannelLists = (parameters["channels"] as IEnumerable<ChannelList>).ToList();
             if (_channelLists.Any())
             {
                 CurrentChannelList = _channelLists[0];
@@ -135,6 +131,8 @@ namespace Afaq.IPTV.ViewModels
         public ICommand GetNextChannelListCommand { get;  }
         public ICommand GetPreviousChannelListCommand { get;  }
         public ICommand PlayCurrentChannelCommand { get; }
+        public bool CanPlay { get; set; }
+
         public void SetCinemaMode(bool isCinemaMode)
         {
             _eventAggregator.GetEvent<CinemaModeEvent>().Publish(isCinemaMode);
@@ -172,33 +170,18 @@ namespace Afaq.IPTV.ViewModels
             }
         }
 
-        private void PlayChannel(Channel channelList)
+        private void PlayChannel()
         {
-            var navigationParameters = new NavigationParameters { { "channelList", _currentChannelList } };
-            _navigationService.NavigateAsync("VideoPage", navigationParameters);
-
-     
+            if (CanPlay) //Avoids the double click scenario
+            {
+                CanPlay = false;
+                var navigationParameters = new NavigationParameters { { "channelList", _currentChannelList } };
+                _navigationService.NavigateAsync("VideoPage", navigationParameters);
+            }
+        
         }
 
         #endregion
 
-        private async void PreviewChannel(string channelPath)
-        {
-            await Task.Delay(1000);
-            if (channelPath == CurrentChannelList.CurrentChannel.CurrentSource.VideoSource)
-            {
-                System.Diagnostics.Debug.WriteLine("### Playing Channel ###");
-                CurrentVideoSource = channelPath;
-            }
-           
-        }
-
-        private void OnChannelChanged(object sender, Channel channel)
-        {
-            var channelParameters = new NavigationParameters();
-            if (channel == null) return;
-            channelParameters.Add("channel", channel);
-            _navigationService.NavigateAsync("VideoPage", channelParameters);
-        }
     }
 }

@@ -51,6 +51,7 @@ namespace Afaq.IPTV.Views
             }
         }
 
+
         protected override void OnDisappearing()
         {
             MessagingCenter.Send<object>(this, Constants.HidePlayer);
@@ -64,15 +65,17 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Unsubscribe<object>(this, Constants.DelKey);
             MessagingCenter.Unsubscribe<object, string>(this, Constants.KeyEntered);
             MessagingCenter.Unsubscribe<object>(this, Constants.AppPaused);
+            MessagingCenter.Unsubscribe<object>(this, Constants.AppResumed);
             base.OnDisappearing();
         }
 
         protected override void OnAppearing()
         {
+            _viewModel.CanPlay = true;
             MessagingCenter.Send<object>(this, Constants.ShowPlayer);
 
-            MessagingCenter.Subscribe<object>(this, Constants.MoveUp, o => { _viewModel.MoveSelectionUp(); });
-            MessagingCenter.Subscribe<object>(this, Constants.MoveDown, o => { _viewModel.MoveSelectionDown(); });
+            MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
+            MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
             MessagingCenter.Subscribe<object>(this, Constants.MoveLeft, OnMoveLeft);
             MessagingCenter.Subscribe<object>(this, Constants.MoveRight, OnMoveRight);
             MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { _viewModel.PlayCurrentChannelCommand.Execute(MyChannelList.SelectedItem); });
@@ -83,6 +86,17 @@ namespace Afaq.IPTV.Views
 
 
             base.OnAppearing();
+        }
+
+        private void OnMoveUp(object o)
+        {
+            System.Diagnostics.Debug.WriteLine("###Going Up####");
+            _viewModel.MoveSelectionUp();
+        }
+
+        private void OnMoveDown(object o)
+        {
+            _viewModel.MoveSelectionDown();
         }
 
         private void OnAppResumed(object obj)

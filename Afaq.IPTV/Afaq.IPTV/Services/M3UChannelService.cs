@@ -22,11 +22,46 @@ namespace Afaq.IPTV.Services
             return Task<IEnumerable<ChannelList>>.Factory.StartNew(() => GetAllChannelsList(data));
         }
 
+        public Task<IEnumerable<ChannelList>> GetAllChannelsAsync(List<string> dataList)
+        {
+            return Task<IEnumerable<ChannelList>>.Factory.StartNew(() => GetAllChannelsList(dataList));
+        }
+
         public Task<IEnumerable<Channel>> GetChannelsAsync(string key, string listName)
         {
             return Task<IEnumerable<Channel>>.Factory.StartNew(() => GetChannels(key, listName));
         }
 
+        private IEnumerable<ChannelList> GetAllChannelsList(List<string> dataList)
+        {
+            var channelListDict = new Dictionary<string,ChannelList>();
+            var resultList = new List<IEnumerable<ChannelList>>();
+            foreach (var data in dataList)
+            {
+                resultList.Add(GetAllChannelsList(data)); 
+            }
+            foreach (var channelLists in resultList)
+            {
+                foreach (var channelList in channelLists)
+                {
+                    if (channelListDict.ContainsKey(channelList.Name))
+                    {
+                        channelListDict[channelList.Name] = channelListDict[channelList.Name].Merge(channelList);
+                    }
+                    else
+                    {
+                        channelListDict[channelList.Name] = channelList; 
+                    }
+                   
+                }
+            }
+            var result = new ObservableCollection<ChannelList>();
+            foreach (var channelList in channelListDict.Values)
+            {
+                result.Add(channelList); 
+            }
+            return result;
+        }
         private IEnumerable<ChannelList> GetAllChannelsList(string data)
         {
             var allChanelsList = new ChannelList() {Name = "All"};

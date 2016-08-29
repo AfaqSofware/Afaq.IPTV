@@ -6,7 +6,14 @@ namespace Afaq.IPTV.Services
 {
     public interface IChannelService
     {
-        Task<IEnumerable<ChannelList>> GetAllChannelsAsync(string data);
+        /// <summary>
+        /// Get All ChannelLists from provided data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        Task<IEnumerable<ChannelList>> GetAllChannelsAsync(string dataList);
+
+        Task<IEnumerable<ChannelList>> GetAllChannelsAsync(List<string> dataList);
         Task<IEnumerable<Channel>> GetChannelsAsync(string key, string listName);
     }
 }

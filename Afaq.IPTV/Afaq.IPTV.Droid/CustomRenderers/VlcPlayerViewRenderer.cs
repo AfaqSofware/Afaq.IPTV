@@ -51,18 +51,21 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if (e.PropertyName == "VideoSource")
             {
                 var channelStr = ((VlcPlayerView)sender).VideoSource;
-                if (channelStr.Contains("\r")) {
+                if (channelStr != null && channelStr.Contains("\r")) {
                     channelStr = channelStr.Remove(channelStr.IndexOf("\r"), "\r".Length);
                 }
                 _uri = Android.Net.Uri.Parse(channelStr);
-                _vlcVideoPlayer.Play(_uri);
+                if (_vlcVideoPlayer != null) _vlcVideoPlayer.Play(_uri);
             }
             if (e.PropertyName == "IsHardwareDecoding")
             {
                 var isHardwareDecoing = ((VlcPlayerView)sender).IsHardwareDecoding;
-                _vlcVideoPlayer.Stop();
-                _vlcVideoPlayer.SetHardwareDecoding(isHardwareDecoing);
-                _vlcVideoPlayer.Play(_uri);
+                if (_vlcVideoPlayer != null)
+                {
+                    _vlcVideoPlayer.Stop();
+                    _vlcVideoPlayer.SetHardwareDecoding(isHardwareDecoing);
+                    _vlcVideoPlayer.Play(_uri);
+                }
             }
 
 

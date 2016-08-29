@@ -18,6 +18,7 @@ namespace Afaq.IPTV.ViewModels
         ICommand GetNextChannelListCommand { get;  }
         ICommand GetPreviousChannelListCommand { get; }
         ICommand PlayCurrentChannelCommand { get;  }
+        bool CanPlay { get; set; }
 
         void SetCinemaMode(bool isCinemaMode);
         void SignOut();

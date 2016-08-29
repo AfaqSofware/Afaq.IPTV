@@ -5595,11 +5595,14 @@ namespace Afaq.IPTV.Droid
 			// aapt resource value: 0x7f0200ce
 			public const int mr_ic_play_light = 2130837710;
 			
-			// aapt resource value: 0x7f0200d0
-			public const int notification_template_icon_bg = 2130837712;
+			// aapt resource value: 0x7f0200d1
+			public const int notification_template_icon_bg = 2130837713;
 			
 			// aapt resource value: 0x7f0200cf
 			public const int preference_list_divider_material = 2130837711;
+			
+			// aapt resource value: 0x7f0200d0
+			public const int screen = 2130837712;
 			
 			static Drawable()
 			{
@@ -8428,6 +8431,9 @@ namespace Afaq.IPTV.Droid
 			
 			// aapt resource value: 0x7f0b000e
 			public const int Theme_MediaRouter_LightControlPanel = 2131427342;
+			
+			// aapt resource value: 0x7f0b01f2
+			public const int Theme_Splash = 2131427826;
 			
 			// aapt resource value: 0x7f0b0119
 			public const int ThemeOverlay_AppCompat = 2131427609;

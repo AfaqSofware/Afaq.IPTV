@@ -23,7 +23,7 @@ namespace Afaq.IPTV.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            MyWebView.HeightRequest = Height / 1.5;
+            MyWebView.HeightRequest = Height / 1.25;
             MyWebView.Source = _url;
         }
 

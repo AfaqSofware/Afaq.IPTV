@@ -1,4 +1,5 @@
-﻿using Afaq.IPTV.Events;
+﻿using System;
+using Afaq.IPTV.Events;
 using Afaq.IPTV.Helpers;
 using Android.App;
 using Android.Content;
@@ -14,43 +15,44 @@ using Prism.Events;
 using Prism.Unity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using View = Android.Views.View;
 
 namespace Afaq.IPTV.Droid
 {
-    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    [IntentFilter(new[] {Intent.ActionMain}, Categories = new[] {Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher})]
+    [Activity(Label = "Afaq.IPTV", Icon = "@drawable/icon",ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsApplicationActivity
     {
         private PrismApplication _application;
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
-        private bool _isTV; 
+        private bool _isTv; 
         
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            
-            Forms.Init(this, bundle);
-
-            var uiModeManager = (UiModeManager) GetSystemService(UiModeService);
-            if (uiModeManager.CurrentModeType == UiMode.TypeTelevision)
+            try
             {
-                _isTV = true; 
-                _application = new TvApp();
+                base.OnCreate(bundle);
+                Forms.Init(this, bundle);
+                var uiModeManager = (UiModeManager)GetSystemService(UiModeService);
+                if (uiModeManager.CurrentModeType == UiMode.TypeTelevision) {
+                    _isTv = true;
+                    _application = new TvApp();
+                } else {
+                    _isTv = false;
+                    _application = new MobileApp();
+                }
+                _container = _application.Container;
+                _application.Properties["Serial"] = Build.Serial;
+                LoadApplication(_application);
+                _eventAggregator = _container.Resolve<IEventAggregator>();
+                _eventAggregator.GetEvent<CinemaModeEvent>().Subscribe(OnCinemaModeEvent);
+                MessagingCenter.Subscribe<object>(this, Constants.LoginError, OnLoginError);
             }
-            else
+            catch (Exception ex)
             {
-                _isTV = false; 
-                _application = new MobileApp();              
+                new AlertDialog.Builder(this).SetMessage(ex.Message).Show();
+                throw;
             }
-
-            _container = _application.Container;
-            _application.Properties["Serial"] = Build.Serial;
-            LoadApplication(_application);
-            _eventAggregator = _container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<CinemaModeEvent>().Subscribe(OnCinemaModeEvent);
-            MessagingCenter.Subscribe<object>(this, Constants.LoginError, OnLoginError);
+          
         }
 
         private void OnLoginError(object obj)
@@ -89,12 +91,10 @@ namespace Afaq.IPTV.Droid
 
         public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
         {
-            if (_isTV)
+            if (_isTv)
             {
                 switch (e.KeyCode) {
                     case Keycode.DpadUp:
-                    case Keycode.ChannelDown:
-                    case Keycode.ChannelUp:
                     case Keycode.DpadDown:
                     case Keycode.DpadLeft:
                     case Keycode.DpadRight:
@@ -107,14 +107,16 @@ namespace Afaq.IPTV.Droid
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            if (true)
-            {
+            if (true) {
+                                    
                 switch (e.KeyCode) {
+                    case Keycode.ChannelUp:
                     case Keycode.DpadUp:
                         MessagingCenter.Send<object>(this, Constants.MoveUp);
                         return true;
 
                     case Keycode.DpadDown:
+                    case Keycode.ChannelDown:
                         MessagingCenter.Send<object>(this, Constants.MoveDown);
                         return true;
 
@@ -180,12 +182,7 @@ namespace Afaq.IPTV.Droid
                     case Keycode.C:
                         MessagingCenter.Send<object, string>(this, Constants.KeyEntered, "C");
                         break;
-                    case Keycode.ChannelDown:
-                        MessagingCenter.Send<object>(this, Constants.ChannelDown);
-                        break;
-                    case Keycode.ChannelUp:
-                        MessagingCenter.Send<object>(this, Constants.ChannelUp);
-                        break;
+
                     case Keycode.D:
                         MessagingCenter.Send<object, string>(this, Constants.KeyEntered, "D");
                         break;

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.Models;
@@ -6,43 +9,47 @@ using Afaq.IPTV.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
-using Realms;
 using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
-
     public class LoginPageViewModel : BindableBase
     {
-        private const string StrChannels = "channels";
+        private const string STR_IS_AUTO_LOGIN = "IsAutoLogin";
+        private const string CHANNELS = "channels";
+        private const string IS_REMEMBER_ME = "IsRememberMe";
         private readonly IAuthenticationService _authenticationService;
+        private readonly IChannelService _channelService;
+        private readonly IDbService _dbService;
         private readonly INavigationService _navigationService;
-
-        private readonly Realm _realm;
-        private bool _isAutoLogin;
+        private bool _canLoginUsernamePassword;
         private bool _isLoginButtonEnabled;
-        private bool _isRememberMe;
         private bool _isSigningIn;
         private string _password;
         private string _statusMessage;
         private string _username;
-        private bool _canLogin;
+        private ObservableCollection<ActivationCode> _activationCodes;
 
-        public event EventHandler LoginSucceeded;
-        public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
+
+
+        public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IDbService dbService, IChannelService channelService)
         {
             _navigationService = navigationService;
             _authenticationService = authenticationService;
-            LoginCommand = new DelegateCommand(Login, () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && CanLogin);
-            _realm = Realm.GetInstance();
-            if (!_realm.All<Credentials>().ToList().Any()) return;
-            var credentials = _realm.All<Credentials>().ToList().First();
-            if (credentials == null) return;
+            _dbService = dbService;
+            _channelService = channelService;
+            LoginUsernamePasswordCommand = new DelegateCommand(DoLoginUsernamePassword, () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && CanLoginUsernamePassword);
+            LoginActivationCodesCommand = new DelegateCommand(DoLoginActivationCodes, CanLoginActivationCodes);
+            ClearHistoryCommand = new DelegateCommand(DoClearHistory);
+           
+            var user = _dbService.GetLastSignedInUser();
+            Username = user.Username;
+            Password = user.Password;
+        }
 
-            Username = credentials.Username;
-            Password = credentials.Password;
-            IsRememberMe = credentials.IsRememberMe;
-            IsAutoLogin = credentials.IsAutoLogin;
+        private bool CanLoginActivationCodes()
+        {
+            return ActivationCodes.Any(activationCode => activationCode.IsActive);
         }
 
         public string Username
@@ -52,7 +59,7 @@ namespace Afaq.IPTV.ViewModels
             {
                 _username = value;
                 OnPropertyChanged();
-                LoginCommand.RaiseCanExecuteChanged();
+                LoginUsernamePasswordCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -63,39 +70,53 @@ namespace Afaq.IPTV.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
-                LoginCommand.RaiseCanExecuteChanged();
+                LoginUsernamePasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+        public ObservableCollection<ActivationCode> ActivationCodes
+        {
+
+            get { return new ObservableCollection<ActivationCode>(_dbService.GetActivationCodes("Default"));  }
+            set
+            {
+                SetProperty(ref _activationCodes, value);
+                LoginActivationCodesCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public bool CanLogin
+        public bool CanLoginUsernamePassword
+        {
+            get { return _canLoginUsernamePassword; }
+            set
+            {
+                _canLoginUsernamePassword = value;
+                LoginUsernamePasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool IsRememberPassword
         {
             get
             {
-                return _canLogin;
+                return Settings.IsRememberPassword;
             }
             set
             {
-                _canLogin = value;
-                LoginCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public bool IsRememberMe
-        {
-            get { return _isRememberMe; }
-            set
-            {
-                _isRememberMe = value;
+                Settings.IsRememberPassword = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsAutoLogin
         {
-            get { return _isAutoLogin; }
+            get
+            {
+
+                return Settings.IsAutoLogin;
+            }
             set
             {
-                _isAutoLogin = value;
+                Settings.IsAutoLogin= value;
                 OnPropertyChanged();
             }
         }
@@ -130,71 +151,131 @@ namespace Afaq.IPTV.ViewModels
             }
         }
 
-        public DelegateCommand LoginCommand { get; set; }
+        public DelegateCommand LoginUsernamePasswordCommand { get; set; }
+        public DelegateCommand LoginActivationCodesCommand { get; set; }
+        public DelegateCommand ClearHistoryCommand { get; set; }
 
-        private async void Login()
+
+        private async void DoLoginActivationCodes()
+        {
+            IsSigningIn = true;
+
+            try
+            {
+                var loginResult = await _authenticationService.GetRequestAsync(ActivationCodes) ;
+                var successfulResults = loginResult.Where(a => a.LoginStatus == LoginStatus.Successful).ToList();
+                var failureResults = loginResult.Where(a => a.LoginStatus == LoginStatus.Error).ToList();
+                var channelsStringLists = new List<string>();
+                if (successfulResults.Any())
+                {
+                    foreach (var successfulResult in successfulResults)
+                    {
+                        channelsStringLists.Add(successfulResult.Channels);
+                    }
+
+                    var channelList = await _channelService.GetAllChannelsAsync(channelsStringLists);
+                    var parameters = new NavigationParameters {{CHANNELS, channelList}};
+
+                    await
+                        _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute),
+                            parameters, true);
+                }
+                else
+                {
+                    if (failureResults.Any())
+                    {
+                        StatusMessage = failureResults.First().StatusMessage;
+                    }
+                }
+                IsSigningIn = false;
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessagingCenter.Send<object>(this, Constants.LoginError);
+            }
+        }
+
+        private async void DoLoginUsernamePassword()
         {
             IsSigningIn = true;
 
             try
             {
                 var loginResult = await _authenticationService.GetRequestAsync(Username, Password);
-
-                IsSigningIn = false;
-                switch (loginResult.LoginStatus)
+                var successfulResults = loginResult.Where(a => a.LoginStatus == LoginStatus.Successful).ToList();
+                var failureResults = loginResult.Where(a => a.LoginStatus == LoginStatus.Error).ToList();
+                var channelsStringLists = new List<string>();
+                if (successfulResults.Any())
                 {
-                    case LoginStatus.Successful:
-                        LoginSucceeded?.Invoke(this, null);
-                        var usrname = Username;
-                        var credentials = _realm.All<Credentials>().Where(d => d.Username == usrname).ToList();
+                    var user = new User
+                    {
+                        Username = Username,
+                        Password = IsRememberPassword ? Password : "",
+                        LastSignIn = DateTime.Now
+                    };
 
-                        foreach (var credential in credentials)
-                        {
-                            using (var trans = _realm.BeginWrite())
-                            {
-                                _realm.Remove(credential);
-                                trans.Commit();
-                            }
-                        }
+                    _dbService.SaveUser(user);
+                    foreach (var successfulResult in successfulResults)
+                    {
+                        channelsStringLists.Add(successfulResult.Channels);
+                    }
 
-                        _realm.Write(() =>
-                        {
-                            var entry = _realm.CreateObject<Credentials>();
+                    var channelList = await _channelService.GetAllChannelsAsync(channelsStringLists);
+                    var parameters = new NavigationParameters {{CHANNELS, channelList}};
 
-                            if (IsRememberMe)
-                            {
-                                entry.Password = Password;
-                            }
-                            entry.Username = Username;
-                            entry.IsAutoLogin = IsAutoLogin;
-                            entry.IsRememberMe = IsRememberMe;
-                        });
-
-
-                        var channels = loginResult.Channels;
-                        var parameters = new NavigationParameters {{StrChannels, channels}};
-
-                        await
-                            _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute),
-                                parameters, true);
-
-                        break;
-                    case LoginStatus.Error:
-                        StatusMessage = loginResult.StatusMessage;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-
+                    await _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute),parameters, true);
                 }
+                else
+                {
+                    if (failureResults.Any())
+                    {
+                        StatusMessage = failureResults.First().StatusMessage;
+                    }
+                }
+                IsSigningIn = false;
+                //switch (loginResult[0].LoginStatus)
+                //{
+                //    case LoginStatus.Successful:
+                //        LoginSucceeded?.Invoke(this, null);
+                //        var user = new User
+                //        {
+                //            Username = Username,
+                //            Password = IsRememberMe ? Password : "",
+                //            LastSignIn = DateTime.Now
+                //        };
+
+                //        _dbService.SaveUser(user);
+                //        var channels = loginResult[0].Channels;
+                //        var channelList = await _channelService.GetAllChannelsAsync(channels); 
+                //        var parameters = new NavigationParameters {{CHANNELS, channelList} };
+
+                //        await _navigationService.NavigateAsync(new Uri("http://www.Afaq.com/MainPage", UriKind.Absolute), parameters, true);
+
+                //        break;
+                //    case LoginStatus.Error:
+                //        StatusMessage = loginResult[0].StatusMessage;
+                //        break;
+                //    default:
+                //        throw new ArgumentOutOfRangeException();
+                //}
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
-
-               MessagingCenter.Send<object>(this,Constants.LoginError);
+                Debug.WriteLine(ex.Message);
+                MessagingCenter.Send<object>(this, Constants.LoginError);
             }
         }
 
+        private void DoClearHistory()
+        {
+            if (_dbService.ClearUsers())
+            {
+                Password = "";
+                Username = "";
+            }
+        }
     }
-
 }

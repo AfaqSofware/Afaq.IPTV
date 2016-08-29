@@ -21,6 +21,11 @@ namespace Afaq.IPTV.Services
             return Task<IEnumerable<ChannelList>>.Factory.StartNew(() => GetAllChannelsList(data));
         }
 
+        public Task<IEnumerable<ChannelList>> GetAllChannelsAsync(List<string> dataList)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<IEnumerable<Channel>> GetChannelsAsync(string key, string listName)
         {
             return Task<IEnumerable<Channel>>.Factory.StartNew(() => GetChannels(key, listName));
