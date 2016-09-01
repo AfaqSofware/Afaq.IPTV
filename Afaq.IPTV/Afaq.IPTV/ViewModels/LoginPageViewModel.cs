@@ -36,6 +36,7 @@ namespace Afaq.IPTV.ViewModels
             _authenticationService = authenticationService;
             _dbService = dbService;
             _channelService = channelService;
+            MessagingCenter.Subscribe<object>(this, Constants.ActivationCodesModified, OnActivationCodesModified);
             LoginUsernamePasswordCommand = new DelegateCommand(DoLoginUsernamePassword, () => !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && CanLoginUsernamePassword);
             LoginActivationCodesCommand = new DelegateCommand(DoLoginActivationCodes, CanLoginActivationCodes);
             ClearHistoryCommand = new DelegateCommand(DoClearHistory);
@@ -44,6 +45,12 @@ namespace Afaq.IPTV.ViewModels
             Username = user.Username;
             Password = user.Password;
         }
+
+        private void OnActivationCodesModified(object sender)
+        {
+            LoginActivationCodesCommand.RaiseCanExecuteChanged();
+        }
+
 
         private bool CanLoginActivationCodes()
         {

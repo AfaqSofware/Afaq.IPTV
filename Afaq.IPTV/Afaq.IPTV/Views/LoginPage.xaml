@@ -5,24 +5,24 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Afaq.IPTV.Views.LoginPage">
-    <StackLayout x:Name="outerStackLayout" HorizontalOptions="Center" VerticalOptions="Center">
 
-        <!--<Image Source="https://s19.postimg.org/ph9g2fjhf/a1_tv.png" HeightRequest="200" WidthRequest="200" />-->
-        <StackLayout>
-            <Frame OutlineColor="Transparent" Padding="0" x:Name="LoginFrame">
-                <!--The content is filled in runtime which can be UserPasswordLoginView or ActivationCodeLoginView-->
-            </Frame>
-            <Button x:Name="btnSwithMode" Text="Switch Access Mode" Clicked="BtnSwitchMode_OnClicked" />
-            <!--<Button Text="Clear History" Command="{Binding ClearHistoryCommand}" HorizontalOptions="Start"/>-->
-            <Button x:Name="BtnSubscribe" Text="Subscribe" Clicked="btnSubscribe_OnClicked" Margin="0,20,0,0" />
-            <Button x:Name="BtnFreeTrial" Text="Free Trial" Clicked="BtnFreeTrial_OnClicked" />
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Device Serial:" />
-                <Label x:Name="labelSerial" />
-            </StackLayout>
-            <Label Text="{Binding StatusMessage}" IsVisible="{Binding HasStatus}" />
-            <ActivityIndicator IsRunning="{Binding IsSigningIn}" />
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Frame OutlineColor="Transparent" Padding="0" x:Name="LoginFrame">
+            <!--The content is filled in runtime which can be UserPasswordLoginView or ActivationCodeLoginView-->
+        </Frame>
+        <StackLayout Orientation="Horizontal">
+            <Switch x:Name="SwitchAutoLogin" IsToggled="{Binding IsAutoLogin, Mode=TwoWay}" />
+            <Label Text="Auto Login" IsEnabled="{Binding IsAutoLogin, Mode=TwoWay}" />
         </StackLayout>
+        <Button x:Name="btnSwitchMode" Text="Switch Access Mode" Clicked="BtnSwitchMode_OnClicked" />
+        <Button x:Name="BtnSubscribe" Text="Subscribe" Clicked="btnSubscribe_OnClicked" Margin="0,20,0,0" />
+        <Button x:Name="BtnFreeTrial" Text="Free Trial" Clicked="BtnFreeTrial_OnClicked" />
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Device Serial:" />
+            <Label x:Name="labelSerial" />
+        </StackLayout>
+        <Label Text="{Binding StatusMessage}" IsVisible="{Binding HasStatus}" />
+        <ActivityIndicator IsRunning="{Binding IsSigningIn}" />
     </StackLayout>
 
-</ContentPage>
+</ContentPage> 

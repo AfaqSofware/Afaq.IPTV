@@ -5,12 +5,12 @@
                  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
                  xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
                  prism:ViewModelLocator.AutowireViewModel="True"
-                 x:Class="Afaq.IPTV.Views.ActivationCodePage">
+                 x:Class="Afaq.IPTV.Views.ActivationCodePopupPage">
 
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="20, 100, 20, 100">
-      <StackLayout BackgroundColor="Black">
-        <Entry x:Name="EntryActivationCode" Placeholder="Insert your activation code" Text="{Binding ActivationCode}" />  
-        <Button Text="Add" Command="{Binding AddSubscriptionCodeCommand}" />
+      <StackLayout BackgroundColor="Black" HorizontalOptions="Center">
+        <Entry x:Name="EntryActivationCode" Placeholder="Insert your activation code" Text="{Binding ActivationCode}" Completed="EntryActivationCode_OnCompleted" />  
+        <Button x:Name="BtnAdd" Text="Add" Command="{Binding AddSubscriptionCodeCommand, Mode=TwoWay}" />
         <Label Text="{Binding Status}" HorizontalOptions="Center" TextColor="{Binding StatusColor}" />
 
 

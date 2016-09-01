@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Afaq.IPTV.Enums;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
 using Afaq.IPTV.Views.PartialViews;
+using Prism.Navigation;
 using Rg.Plugins.Popup.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,28 +14,77 @@ using Xamarin.Forms.Xaml;
 
 namespace Afaq.IPTV.Views
 {
-    public partial class LoginPage
+    public partial class LoginPage : INavigationAware
     {
-
-
         private readonly LoginPageViewModel _viewModel;
+        private readonly List<View> _focusableViews; //this list is used to switch the focus on different controls 
 
         public LoginPage()
         {
             InitializeComponent();
 
             _viewModel = (LoginPageViewModel) BindingContext;
-
+            _focusableViews = new List<View>();
             if (Settings.LoginViewType == LoginViewType.ActivationCodeView)
             {
                 LoginFrame.Content = new ActivationCodeLoginView();
+                var activationCodeLoginView = (ActivationCodeLoginView) LoginFrame.Content;
+                _focusableViews.AddRange(activationCodeLoginView.GetFocusableViews());
             }
             else
             {
                 LoginFrame.Content = new UserPasswordLoginView();
+                var userPasswordLoginView = (UserPasswordLoginView) LoginFrame.Content;
+                _focusableViews.AddRange(userPasswordLoginView.GetFocusableViews());
             }
-            //MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
-            //MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
+            _focusableViews.Add(SwitchAutoLogin);
+            _focusableViews.Add(btnSwitchMode);
+            _focusableViews.Add(BtnSubscribe);
+            _focusableViews.Add(BtnFreeTrial);
+
+            MessagingCenter.Subscribe<object>(this, Constants.MoveUp, OnMoveUp);
+            MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+            //   Do nothing
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
+            if (parameters == null) return;
+            if ((bool) parameters["IsAutoLogin"])
+            {
+                AutoLogin();
+            }
+        }
+
+        private void OnMoveDown(object obj)
+        {
+            var focusedIndex = _focusableViews.FindIndex(a => a.IsFocused);
+            if (focusedIndex == _focusableViews.IndexOf(_focusableViews.Last()) || focusedIndex == -1)
+            {
+                _focusableViews[0].Focus();
+            }
+            else
+            {
+                _focusableViews[focusedIndex + 1].Focus();
+            }
+        }
+
+        private void OnMoveUp(object obj)
+        {
+            var focusedIndex = _focusableViews.FindIndex(a => a.IsFocused);
+            if (focusedIndex == -1 || focusedIndex == 0)
+            {
+                _focusableViews.Last().Focus();
+            }
+
+            else
+            {
+                _focusableViews[focusedIndex - 1].Focus();
+            }
         }
 
         protected override void OnAppearing()
@@ -48,148 +100,56 @@ namespace Afaq.IPTV.Views
             base.OnDisappearing();
         }
 
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-
-            if (width > height)
-            {
-                outerStackLayout.Orientation = StackOrientation.Horizontal;
-            }
-            else
-            {
-                outerStackLayout.Orientation = StackOrientation.Vertical;
-            }
-        }
-
-        //private void OnMoveDown(object obj)
-        //{
-        //    if (EntryUserName.IsFocused)
-        //    {
-        //        EntryPassword.Focus();
-        //    }
-        //    else
-        //    {
-        //        if (EntryPassword.IsFocused)
-        //        {
-        //            SwitchRememberMe.Focus();
-        //        }
-        //        else
-        //        {
-        //            if (SwitchRememberMe.IsFocused)
-        //            {
-        //                SwitchAutoLogin.Focus();
-        //            }
-        //            else
-        //            {
-        //                if (SwitchAutoLogin.IsFocused)
-        //                {
-        //                    LoginButton.Focus();
-        //                }
-        //                else
-        //                {
-        //                    EntryUserName.Focus();
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void OnMoveUp(object obj)
-        //{
-        //    if (LoginButton.IsFocused)
-        //    {
-        //        SwitchAutoLogin.Focus();
-        //    }
-        //    else
-        //    {
-        //        if (SwitchAutoLogin.IsFocused)
-        //        {
-        //            SwitchRememberMe.Focus();
-        //        }
-        //        else
-        //        {
-        //            if (SwitchRememberMe.IsFocused)
-        //            {
-        //                EntryPassword.Focus();
-        //            }
-        //            else
-        //            {
-        //                if (EntryPassword.IsFocused)
-        //                {
-        //                    EntryUserName.Focus();
-        //                }
-        //                else
-        //                {
-        //                    LoginButton.Focus();
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private async void AutoLogin()
-        //{
-        //    if (_viewModel.IsAutoLogin)
-        //    {
-        //        await _viewModel.LoginCommand.Execute();
-        //    }
-        //}
-
-        //public void OnNavigatedFrom(NavigationParameters parameters)
-        //{
-
-        //}
-
-        //public void OnNavigatedTo(NavigationParameters parameters)
-        //{
-        //    if (parameters != null ) {
-        //        if ((bool)parameters["IsAutoLogin"])
-        //        {
-        //            AutoLogin();
-        //        }
-            
-        //    } 
-        //}
-
-        //private void EntryUserName_OnCompleted(object sender, EventArgs e)
-        //{
-        //    EntryPassword.Focus();
-        //}
-
-        //private void EntryPassword_OnCompleted(object sender, EventArgs e)
-        //{
-        //    LoginButton.Focus();
-        //}
-
-
-
         private void BtnSwitchMode_OnClicked(object sender, EventArgs e)
         {
-            if (LoginFrame.Content is ActivationCodeLoginView )
+            if (LoginFrame.Content is ActivationCodeLoginView)
             {
+                var activationCodeLoginViews = ((ActivationCodeLoginView) LoginFrame.Content).GetFocusableViews();
+                foreach (var view in activationCodeLoginViews)
+                {
+                    _focusableViews.Remove(view);
+                }
+
                 LoginFrame.Content = new UserPasswordLoginView();
+                _focusableViews.InsertRange(0, ((UserPasswordLoginView) LoginFrame.Content).GetFocusableViews());
                 Settings.LoginViewType = LoginViewType.UserNameView;
             }
             else
             {
+                var usernamePasswordLoginViews = ((UserPasswordLoginView) LoginFrame.Content).GetFocusableViews();
+                foreach (var view in usernamePasswordLoginViews)
+                {
+                    _focusableViews.Remove(view);
+                }
                 LoginFrame.Content = new ActivationCodeLoginView();
+                _focusableViews.InsertRange(0, ((ActivationCodeLoginView) LoginFrame.Content).GetFocusableViews());
                 Settings.LoginViewType = LoginViewType.ActivationCodeView;
             }
-         
         }
 
         private async void btnSubscribe_OnClicked(object sender, EventArgs e)
         {
             var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&path=57&product_id=51");
             await Navigation.PushPopupAsync(page);
-
         }
 
         private async void BtnFreeTrial_OnClicked(object sender, EventArgs e)
         {
             var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&path=57&product_id=50");
             await Navigation.PushPopupAsync(page);
+        }
+
+        private async void AutoLogin()
+        {
+            if (!_viewModel.IsAutoLogin) return;
+            if (LoginFrame.Content is ActivationCodeLoginView)
+            {
+                await _viewModel.LoginActivationCodesCommand.Execute();
+            }
+            else
+            {
+                await _viewModel.LoginUsernamePasswordCommand.Execute();
+            }
         }
     }
 }

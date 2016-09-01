@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Afaq.IPTV.Helpers;
 using Afaq.IPTV.Models;
 using Afaq.IPTV.Services.DO;
 using Realms;
+using Xamarin.Forms;
 
 namespace Afaq.IPTV.Services
 {
@@ -127,6 +129,7 @@ namespace Afaq.IPTV.Services
             try
             {
                 var activationCodeDo = GetActivationCodeDOById(userName, activationCode.Id);
+                MessagingCenter.Send<object>(this, Constants.ActivationCodesModified);
                 return activationCodeDo == null
                     ? AddActiviationCode(userName, activationCode)
                     : UpdateActivationCode(userName, activationCode);
@@ -169,6 +172,7 @@ namespace Afaq.IPTV.Services
                     _realmInstance.Remove(activiationCodeDO);
                     trans.Commit();
                 }
+                MessagingCenter.Send<object>(this, Constants.ActivationCodesModified);
                 ActivationCodesModified?.Invoke(this,null);
                 return true;
             }
@@ -207,6 +211,7 @@ namespace Afaq.IPTV.Services
                     activiationCodeDO.IsActive = activationCode.IsActive;
                     userDo.ActivationCodes.Add(activiationCodeDO);
                 });
+                MessagingCenter.Send<object>(this, Constants.ActivationCodesModified);
                 return true;
             }
             catch (Exception ex)
@@ -226,6 +231,7 @@ namespace Afaq.IPTV.Services
                     activationCodeDo.IsActive = activationCode.IsActive;
                     trans.Commit();
                 }
+                MessagingCenter.Send<object>(this, Constants.ActivationCodesModified);
                 return true;
             }
             catch (Exception ex)

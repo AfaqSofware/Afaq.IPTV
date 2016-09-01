@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace Afaq.IPTV.ViewModels
 {
-    public class ActivationCodePageViewModel:BindableBase
+    public class ActivationCodePopupPageViewModel:BindableBase
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IDbService _dbService;
@@ -21,7 +21,7 @@ namespace Afaq.IPTV.ViewModels
         private string _status;
         private Color _statusColor;
 
-        public ActivationCodePageViewModel(IAuthenticationService authenticationService, IDbService dbService)
+        public ActivationCodePopupPageViewModel(IAuthenticationService authenticationService, IDbService dbService)
         {
             _authenticationService = authenticationService;
             _dbService = dbService;

@@ -81,7 +81,7 @@
     <Compile Include="ViewModels\IVideoPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
-    <Compile Include="ViewModels\ActivationCodePageViewModel.cs" />
+    <Compile Include="ViewModels\ActivationCodePopupPageViewModel.cs" />
     <Compile Include="ViewModels\VideoPageViewModel.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -96,8 +96,8 @@
     <Compile Include="Views\PhoneMainPage.xaml.cs">
       <DependentUpon>PhoneMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ActivationCodePage.xaml.cs">
-      <DependentUpon>ActivationCodePage.xaml</DependentUpon>
+    <Compile Include="Views\ActivationCodePopupPage.xaml.cs">
+      <DependentUpon>ActivationCodePopupPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TVMainPage.xaml.cs">
       <DependentUpon>TVMainPage.xaml</DependentUpon>
@@ -240,7 +240,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ActivationCodePage.xaml">
+    <EmbeddedResource Include="Views\ActivationCodePopupPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

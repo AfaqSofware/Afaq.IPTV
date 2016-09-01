@@ -22,6 +22,7 @@
 
     public class Constants
     {
+        public const string ActivationCodesModified = "ActivationCodesModified";
         public const string AppPaused = "AppPaused";
         public const string AppResumed = "AppResumed";
         public const string VolumeUp = "VolumeUp";

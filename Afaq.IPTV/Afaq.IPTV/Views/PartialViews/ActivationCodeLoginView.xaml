@@ -2,8 +2,8 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Afaq.IPTV.Views.PartialViews.ActivationCodeLoginView">
-  <StackLayout Spacing="30">
+  <StackLayout Spacing="30" HorizontalOptions="Center">
     <Button x:Name="ButtonManageActivationCode" Text="Manage Activation Codes" Clicked="ButtonManageActivationCode_OnClicked"/>
-    <Button Text="Next" BackgroundColor="Green" Command="{Binding LoginActivationCodesCommand}"/>
+    <Button x:Name="ButtonNext" Text="Next" BackgroundColor="Green" Command="{Binding LoginActivationCodesCommand}"/>
   </StackLayout>
 </ContentView>
