@@ -72,7 +72,6 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
                     return;
 
                 _playerState = value;
-                PlayerStateChanged?.Invoke(this, value);
             }
         }
 
@@ -91,7 +90,6 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
 
         public bool IsPlaying => _mediaPlayer != null && _mediaPlayer.IsPlaying;
         public bool IsDisposed { get; set; }
-        public event EventHandler<PlayerState> PlayerStateChanged;
 
         public void Stop()
         {
@@ -143,7 +141,10 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
             }
         }
 
-        public void Play(Uri media)
+        /// <summary>
+        /// </summary>
+        /// <param name="media">Its what is going to be played</param>
+        public void Play(Uri media, bool isKeepMedia = true)
         {
             try
             {
@@ -156,7 +157,10 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
 
                 Media = _mediaPlayer.Media;
                 Media.SetHWDecoderEnabled(true, true);
-                _latestUri = media;
+                if (isKeepMedia)
+                {
+                    _latestUri = media;
+                }            
                 SetVolume(Volume);
                 Play();
             }
@@ -230,6 +234,8 @@ namespace Afaq.IPTV.Droid.Players.VlcPlayer
                 }
                 PlayerState = (PlayerState) _mediaPlayer.PlayerState;
                 if (PlayerState != PlayerState.Ended) continue;
+                Play(Uri.Parse("https://picarto.tv/user_data/usrimg/cutesatan/offlineimage.png"), false);
+                await Task.Delay(3000);
                 Stop();
                 Play(_latestUri);
             }

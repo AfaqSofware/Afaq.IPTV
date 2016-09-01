@@ -5,14 +5,14 @@
             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
             prism:ViewModelLocator.AutowireViewModel="False"
                      x:Class="Afaq.IPTV.Views.PhoneMainPage"
-            ItemsSource="{Binding ChannelLists}" Appearing="MainPage_OnAppearing">
+            ItemsSource="{Binding ChannelLists}">
     <TabbedPage.ItemTemplate>
         <DataTemplate>
             <ContentPage Title="{Binding Name}"  x:Name="mainContentPage">
                 <ContentPage.Content>
                   <StackLayout BackgroundColor="Black">
                     <Entry Placeholder="Search Channel" Text="{Binding SearchKey, Mode=TwoWay}" />
-                    <ListView x:Name="ChannelList" ItemSelected="ChannelList_OnItemSelected"
+                    <ListView x:Name="ChannelList" ItemTapped="OnItemTapped"
                               ItemsSource="{Binding Channels, Mode=TwoWay}"
                               SelectedItem="{Binding CurrentChannel, Mode=TwoWay}">
                       <ListView.ItemTemplate>

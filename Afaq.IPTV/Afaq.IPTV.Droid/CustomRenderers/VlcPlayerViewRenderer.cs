@@ -34,7 +34,6 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if ((vlcPlayerView == null) || (e.OldElement != null)) return;
             _vlcVideoPlayer = new VlcVideoPlayer(Context);
             
-            _vlcVideoPlayer.PlayerStateChanged += OnPlayerStateChanged;
             MessagingCenter.Subscribe<object>(this, Constants.ReleasePlayer, OnRelease);
             MessagingCenter.Subscribe<object>(this, Constants.VolumeUp, OnVolumeUp);
             MessagingCenter.Subscribe<object>(this, Constants.VolumeDown, OnVolumeDown);
@@ -51,11 +50,16 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if (e.PropertyName == "VideoSource")
             {
                 var channelStr = ((VlcPlayerView)sender).VideoSource;
-                if (channelStr != null && channelStr.Contains("\r")) {
-                    channelStr = channelStr.Remove(channelStr.IndexOf("\r"), "\r".Length);
+
+                if (channelStr == null)
+                {
+                    return;
+                }
+                if (channelStr.Contains("\r")) {
+                    channelStr = channelStr.Remove(channelStr.IndexOf("\r", StringComparison.Ordinal), "\r".Length);
                 }
                 _uri = Android.Net.Uri.Parse(channelStr);
-                if (_vlcVideoPlayer != null) _vlcVideoPlayer.Play(_uri);
+                _vlcVideoPlayer?.Play(_uri);
             }
             if (e.PropertyName == "IsHardwareDecoding")
             {
@@ -86,17 +90,13 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume + 10);
         }
 
-        private void OnPlayerStateChanged(object sender, PlayerState state)
-        {
-            Toast.MakeText(Context, $"{state}", ToastLength.Short).Show();
-        }
+
 
 
         private void OnRelease(object obj)
         {
             _vlcVideoPlayer.Release();
 
-            _vlcVideoPlayer.PlayerStateChanged -= OnPlayerStateChanged;
             MessagingCenter.Unsubscribe<object>(this, Constants.ReleasePlayer);
             MessagingCenter.Unsubscribe<object>(this, Constants.VolumeUp);
             MessagingCenter.Unsubscribe<object>(this, Constants.VolumeDown);

@@ -1,5 +1,6 @@
 // Helpers/Settings.cs
 
+using Afaq.IPTV.Enums;
 using Afaq.IPTV.Views;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;

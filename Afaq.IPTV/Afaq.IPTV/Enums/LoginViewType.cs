@@ -1,4 +1,4 @@
-namespace Afaq.IPTV.Views
+namespace Afaq.IPTV.Enums
 {
     public enum LoginViewType
     {

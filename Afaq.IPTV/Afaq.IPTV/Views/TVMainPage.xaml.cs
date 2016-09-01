@@ -16,40 +16,6 @@ namespace Afaq.IPTV.Views
             BindingContext = _viewModel; 
         }
 
-        private void OnMoveRight(object o)
-        {
-            _viewModel.GetNextChannelListCommand.Execute(null);
-            foreach (Channel channel in MyChannelList.ItemsSource) {
-                if (channel == MyChannelList.SelectedItem) {
-                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
-                    break;
-                }
-            }
-        }
-
-        private void OnMoveLeft(object o)
-        {
-            _viewModel.GetPreviousChannelListCommand.Execute(null);
-            foreach (Channel channel in MyChannelList.ItemsSource) {
-                if (channel == MyChannelList.SelectedItem) {
-                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
-                    break;
-                }
-            }
-        }
-
-        private void OnKeyEntered(object o, string key)
-        {
-            _viewModel.CurrentChannelList.SearchKey += key;
-            foreach (Channel channel in MyChannelList.ItemsSource)
-            {
-                if (channel == MyChannelList.SelectedItem)
-                {
-                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
-                    break; 
-                }
-            }
-        }
 
 
         protected override void OnDisappearing()
@@ -78,7 +44,7 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, OnMoveDown);
             MessagingCenter.Subscribe<object>(this, Constants.MoveLeft, OnMoveLeft);
             MessagingCenter.Subscribe<object>(this, Constants.MoveRight, OnMoveRight);
-            MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { _viewModel.PlayCurrentChannelCommand.Execute(MyChannelList.SelectedItem); });
+            MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { _viewModel.PlayCurrentChannelCommand.Execute(null); });
             MessagingCenter.Subscribe<object>(this, Constants.DelKey, OnDelete);
             MessagingCenter.Subscribe<object, string>(this, Constants.KeyEntered, OnKeyEntered);
             MessagingCenter.Subscribe<object>(this, Constants.AppPaused, OnAppPaused);
@@ -86,6 +52,12 @@ namespace Afaq.IPTV.Views
 
 
             base.OnAppearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            _viewModel.SignOut();
+            return true;
         }
 
         private void OnMoveUp(object o)
@@ -127,16 +99,45 @@ namespace Afaq.IPTV.Views
             }
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            _viewModel.SignOut();
-            return true;
-        }
+
 
         private void MyChannelList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (MyChannelList.SelectedItem != null)
                 MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
         }
+
+        private void OnMoveRight(object o)
+        {
+            _viewModel.GetNextChannelListCommand.Execute(null);
+            foreach (Channel channel in MyChannelList.ItemsSource) {
+                if (channel == MyChannelList.SelectedItem) {
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
+                    break;
+                }
+            }
+        }
+
+        private void OnMoveLeft(object o)
+        {
+            _viewModel.GetPreviousChannelListCommand.Execute(null);
+            foreach (var channel in MyChannelList.ItemsSource) {
+                if (channel != MyChannelList.SelectedItem) continue;
+                MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
+                break;
+            }
+        }
+
+        private void OnKeyEntered(object o, string key)
+        {
+            _viewModel.CurrentChannelList.SearchKey += key;
+            foreach (Channel channel in MyChannelList.ItemsSource) {
+                if (channel == MyChannelList.SelectedItem) {
+                    MyChannelList.ScrollTo(MyChannelList.SelectedItem, ScrollToPosition.Center, false);
+                    break;
+                }
+            }
+        }
+
     }
 }

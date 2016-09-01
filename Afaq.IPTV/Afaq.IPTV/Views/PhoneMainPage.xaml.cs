@@ -18,14 +18,14 @@ namespace Afaq.IPTV.Views
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel;
+
         }
-
-
-        private void MainPage_OnAppearing(object sender, EventArgs e)
+        
+        protected override void OnAppearing()
         {
-            MessagingCenter.Send<object>(this, "ShowPreviewer");
-            _viewModel.SetCinemaMode(false); 
-
+            base.OnAppearing();
+            _viewModel.CanPlay = true;
+            _viewModel.SetCinemaMode(false);
         }
 
         protected override bool OnBackButtonPressed()
@@ -34,10 +34,10 @@ namespace Afaq.IPTV.Views
             return true;
         }
 
-        private void ChannelList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var channelListView = sender as ListView;
-            if (channelListView != null) _viewModel.PlayCurrentChannelCommand.Execute(channelListView.SelectedItem);
+            _viewModel.IsMobile = true;
+            _viewModel.PlayCurrentChannelCommand.Execute(CurrentPage.BindingContext);
         }
     }
 }

@@ -19,23 +19,23 @@ namespace Afaq.IPTV.ViewModels
     public class MainPageViewModel : BindableBase, INavigationAware, IMainPageViewModel
     {
         private ChannelList _currentChannelList;
-        private readonly IChannelService _channelService;
         private readonly INavigationService _navigationService;
         private List<ChannelList> _channelLists;
         private string _currentVideoSource;
         private readonly IEventAggregator _eventAggregator;
         private bool _isHardwareDecoding;
 
-        public MainPageViewModel(IChannelService channelService, INavigationService navigationService, IEventAggregator eventAggregator)
+        public MainPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
-            _channelService = channelService;
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             GetNextChannelListCommand = new DelegateCommand(GetNextChannelList);
             GetPreviousChannelListCommand = new DelegateCommand(GetPreviousChannelList);
-            PlayCurrentChannelCommand = new DelegateCommand(PlayChannel).ObservesProperty(()=>CanPlay);
+            PlayCurrentChannelCommand = new DelegateCommand<ChannelList>(PlayChannel).ObservesProperty(()=>CanPlay);
             
         }
+
+        public bool IsMobile { get; set; }
 
         public List<ChannelList> ChannelLists
         {
@@ -170,12 +170,12 @@ namespace Afaq.IPTV.ViewModels
             }
         }
 
-        private void PlayChannel()
+        private void PlayChannel(ChannelList channelList)
         {
             if (CanPlay) //Avoids the double click scenario
             {
                 CanPlay = false;
-                var navigationParameters = new NavigationParameters { { "channelList", _currentChannelList } };
+                var navigationParameters = new NavigationParameters { { "channelList", channelList??_currentChannelList } , {"isMobile", IsMobile } };
                 _navigationService.NavigateAsync("VideoPage", navigationParameters);
             }
         

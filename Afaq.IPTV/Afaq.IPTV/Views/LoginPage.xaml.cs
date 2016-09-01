@@ -1,4 +1,5 @@
 ﻿using System;
+using Afaq.IPTV.Enums;
 using Afaq.IPTV.Helpers;
 using Afaq.IPTV.ViewModels;
 using Afaq.IPTV.Views.PartialViews;
@@ -187,7 +188,7 @@ namespace Afaq.IPTV.Views
 
         private async void BtnFreeTrial_OnClicked(object sender, EventArgs e)
         {
-            var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&product_id=61");
+            var page = new WebBrowsingPage("http://arabictv.ml/index.php?route=product/product&path=57&product_id=50");
             await Navigation.PushPopupAsync(page);
         }
     }

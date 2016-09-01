@@ -15,9 +15,7 @@ namespace Afaq.IPTV.ViewModels
 {
     public class LoginPageViewModel : BindableBase
     {
-        private const string STR_IS_AUTO_LOGIN = "IsAutoLogin";
         private const string CHANNELS = "channels";
-        private const string IS_REMEMBER_ME = "IsRememberMe";
         private readonly IAuthenticationService _authenticationService;
         private readonly IChannelService _channelService;
         private readonly IDbService _dbService;

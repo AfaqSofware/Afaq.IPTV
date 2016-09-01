@@ -12,7 +12,7 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
-        <StackLayout Grid.Column="0" BackgroundColor="Black">
+        <StackLayout Grid.Column="0">
             <!--<Entry Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}" />-->
           <SearchBar Placeholder="Search Channel" Text="{Binding CurrentChannelList.SearchKey}"/>
             <StackLayout Orientation="Horizontal">
@@ -36,9 +36,10 @@
                 </Image>
             </StackLayout>
 
-            <ListView x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
+            <ListView CachingStrategy="RecycleElement" x:Name="MyChannelList" ItemSelected="MyChannelList_OnItemSelected"
                       ItemsSource="{Binding CurrentChannelList.Channels}"
-                      SelectedItem="{Binding CurrentChannelList.CurrentChannel, Mode=TwoWay}" Grid.Row="2">
+                      SelectedItem="{Binding CurrentChannelList.CurrentChannel, Mode=TwoWay}"  Grid.Row="2">
+             
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ImageCell ImageSource="{Binding Logo}" Text="{Binding Name}" />
@@ -49,13 +50,13 @@
 
 
 
-        <Grid Grid.Column="1" BackgroundColor="Black">
+        <Grid Grid.Column="1" >
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="4*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Frame x:Name="VideoFrame" OutlineColor="Aqua" BackgroundColor="Black" Padding="1" Grid.Row="1">
+            <Frame x:Name="VideoFrame" Grid.Row="1">
                   <controls:VlcPreviewer IsHardwareDecoding="{Binding IsHardwareDecoding}" VideoSource="{Binding CurrentChannelList.CurrentVideoSource}">
                     <controls:VlcPreviewer.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding PlayCurrentChannelCommand}" />

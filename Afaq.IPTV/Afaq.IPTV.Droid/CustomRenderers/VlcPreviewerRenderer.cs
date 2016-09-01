@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Afaq.IPTV.Controls;
 using Afaq.IPTV.Droid.CustomRenderers;
 using Afaq.IPTV.Droid.Players.VlcPlayer;
@@ -29,7 +30,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
 
             _isHidden = false;
             _vlcVideoPlayer = new VlcVideoPlayer(Context);
-            _vlcVideoPlayer.PlayerStateChanged += OnPlayerStateChanged;
+
             MessagingCenter.Subscribe<object>(this, Constants.HidePlayer, OnHidePlayer);
             MessagingCenter.Subscribe<object>(this, Constants.ShowPlayer, OnShowPlayer);
             MessagingCenter.Subscribe<object>(this, Constants.VolumeUp, OnVolumeUp);
@@ -40,7 +41,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
 
         protected override void Dispose(bool disposing)
         {
-            _vlcVideoPlayer.PlayerStateChanged -= OnPlayerStateChanged;
+
             MessagingCenter.Unsubscribe<object>(this, Constants.HidePlayer);
             MessagingCenter.Unsubscribe<object>(this, Constants.ShowPlayer);
             MessagingCenter.Unsubscribe<object>(this, Constants.VolumeUp);
@@ -65,7 +66,7 @@ namespace Afaq.IPTV.Droid.CustomRenderers
             if (e.PropertyName == "VideoSource")
             {
                 var channelStr = ((VlcPreviewer) sender).VideoSource;
-                if (string.IsNullOrEmpty(channelStr) )
+                if (string.IsNullOrEmpty(channelStr))
                 {
                     return;
                 }
@@ -114,11 +115,6 @@ namespace Afaq.IPTV.Droid.CustomRenderers
         private void OnVolumeUp(object obj)
         {
             _vlcVideoPlayer.SetVolume(_vlcVideoPlayer.Volume + 10);
-        }
-
-        private void OnPlayerStateChanged(object sender, PlayerState state)
-        {
-            Toast.MakeText(Context, $"{state}", ToastLength.Short).Show();
         }
 
         private void OnShowPlayer(object obj)
