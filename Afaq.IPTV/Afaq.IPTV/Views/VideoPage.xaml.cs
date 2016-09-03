@@ -11,9 +11,7 @@ namespace Afaq.IPTV.Views
         {
             InitializeComponent();
             _viewModel = (VideoPageViewModel) BindingContext; 
-
         }
-
 
         protected override void OnAppearing()
         {
@@ -21,6 +19,7 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Subscribe<object>(this, Constants.AppPaused, OnPaused);
             MessagingCenter.Subscribe<object>(this, Constants.MoveUp, o => { _viewModel.MoveSelectionUp(); });
             MessagingCenter.Subscribe<object>(this, Constants.MoveDown, o => { _viewModel.MoveSelectionDown(); });
+            MessagingCenter.Subscribe<object>(this, Constants.EnterKey, o => { SendBackButtonPressed(); });
         }
 
         protected override void OnDisappearing()
@@ -29,7 +28,9 @@ namespace Afaq.IPTV.Views
             MessagingCenter.Unsubscribe<object>(this, Constants.AppPaused);
             MessagingCenter.Unsubscribe<object>(this, Constants.MoveUp);
             MessagingCenter.Unsubscribe<object>(this, Constants.MoveDown);
+            MessagingCenter.Unsubscribe<object>(this, Constants.EnterKey);
             MessagingCenter.Send<object>(this, Constants.ReleasePlayer);
+
         }
 
         protected override void OnSizeAllocated(double width, double height)

@@ -41,7 +41,6 @@ namespace Afaq.IPTV.ViewModels
         {
             Aggregator.GetEvent<CinemaModeEvent>().Publish(true); //Turn on Cinema mode 
 
-
             if (!parameters.ContainsKey("channelList")) return;
             CurrentChannelList = (ChannelList) parameters["channelList"];
             if (parameters.ContainsKey("isMobile"))
@@ -55,19 +54,25 @@ namespace Afaq.IPTV.ViewModels
                     IsLogoVisible = true; 
                 }
             }
-            CurrentChannelList.IsLogoVisible = true;
+            IsLogoVisible = true;
             await Task.Delay(2000);
-            CurrentChannelList.IsLogoVisible = false;
+            IsLogoVisible = false;
         }
 
-        public void MoveSelectionUp()
+        public async void MoveSelectionUp()
         {
            _currentChannelList.MoveSelectionUp(null);
+            IsLogoVisible = true;
+            await Task.Delay(2000);
+            IsLogoVisible = false;
         }
 
-        public void MoveSelectionDown()
+        public async void MoveSelectionDown()
         {
             _currentChannelList.MoveSelectionDown(null);
+            IsLogoVisible = true;
+            await Task.Delay(2000);
+            IsLogoVisible = false;
         }
     }
   

@@ -19,8 +19,7 @@ namespace Afaq.IPTV.Models
         private string _searchKey;
         private readonly ChannelListHelper _channelListHelper;
         private string _currentVideoSource;
-        private bool _isLogoVisible;
-
+     
         #endregion
 
         #region Events
@@ -38,11 +37,6 @@ namespace Afaq.IPTV.Models
 
         #region Properties
 
-        public bool IsLogoVisible
-        {
-            get { return _isLogoVisible; }
-            set { SetProperty(ref _isLogoVisible, value); }
-        }
 
         public Channel CurrentChannel
         {
@@ -147,13 +141,13 @@ namespace Afaq.IPTV.Models
 
         private async void PreviewChannel(string channelPath)
         {
-            IsLogoVisible = true;
+
             await Task.Delay(500); //This delay will prevent previewing the channel when the channel is changed. This will give the user a chance to move quickly between channels 
             if (channelPath == CurrentChannel.CurrentSource.VideoSource) {
                 System.Diagnostics.Debug.WriteLine("### Playing Channel ###");
                 CurrentVideoSource = channelPath;
                 await Task.Delay(1000);
-                IsLogoVisible = false; 
+
 
             }
 
