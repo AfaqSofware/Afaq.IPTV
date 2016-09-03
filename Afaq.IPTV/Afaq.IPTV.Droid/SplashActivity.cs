@@ -13,8 +13,8 @@ using Java.Lang;
 
 namespace Afaq.IPTV.Droid
 {
-    [Activity(Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
-    [IntentFilter(new[] { Intent.ActionMain }, Categories = new[] { Intent.CategoryLauncher, Intent.CategoryLeanbackLauncher })]
+    [Activity(Theme = "@style/Theme.Splash", NoHistory = true)]
+  
     public class SplashActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)

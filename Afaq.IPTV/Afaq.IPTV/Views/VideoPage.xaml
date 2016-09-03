@@ -11,7 +11,7 @@
         <Grid>
             <controls:VlcPlayerView x:Name="VideoPlayer" VideoSource="{Binding CurrentChannelList.CurrentVideoSource}" />
             <Label Text="{Binding CurrentChannelList.CurrentChannel.Name}" TextColor="White" BackgroundColor="Black"
-                   FontSize="50" Margin="10" IsVisible="{Binding IsLogoVisible, Mode=TwoWay}"
+                   FontSize="50" Margin="10" IsVisible="{Binding IsChannelTitleVisible, Mode=TwoWay}"
                    HorizontalOptions="Start" VerticalOptions="Start" />
         </Grid>
     </StackLayout>

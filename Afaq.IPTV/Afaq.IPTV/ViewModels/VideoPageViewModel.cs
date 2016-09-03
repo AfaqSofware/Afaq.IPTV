@@ -10,7 +10,7 @@ namespace Afaq.IPTV.ViewModels
     public class VideoPageViewModel : BindableBase, INavigationAware, IVideoPageViewModel
     {
         private ChannelList _currentChannelList;
-        private bool _isLogoVisible;
+        private bool _isChannelTitleVisible;
 
 
         public VideoPageViewModel(IEventAggregator eventAggregator)
@@ -18,10 +18,10 @@ namespace Afaq.IPTV.ViewModels
             Aggregator = eventAggregator;
         }
 
-        public bool IsLogoVisible
+        public bool IsChannelTitleVisible
         {
-            get { return _isLogoVisible; }
-            set { SetProperty(ref _isLogoVisible, value); }
+            get { return _isChannelTitleVisible; }
+            set { SetProperty(ref _isChannelTitleVisible, value); }
         }
 
         public IEventAggregator Aggregator { get; }
@@ -43,36 +43,44 @@ namespace Afaq.IPTV.ViewModels
 
             if (!parameters.ContainsKey("channelList")) return;
             CurrentChannelList = (ChannelList) parameters["channelList"];
+
+            // Here we do not want to show the channelsTitle in case it is a mobile 
             if (parameters.ContainsKey("isMobile"))
             {
                 if ((bool)parameters["isMobile"])
                 {
-                    IsLogoVisible = false; 
+                    IsChannelTitleVisible = false; 
                 }
-                else
-                {
-                    IsLogoVisible = true; 
+                else {
+                    await BlinkChannelTitle();
                 }
             }
-            IsLogoVisible = true;
-            await Task.Delay(2000);
-            IsLogoVisible = false;
+            else
+            {
+                await BlinkChannelTitle();
+            }
+
         }
+
 
         public async void MoveSelectionUp()
         {
            _currentChannelList.MoveSelectionUp(null);
-            IsLogoVisible = true;
-            await Task.Delay(2000);
-            IsLogoVisible = false;
+            await BlinkChannelTitle();
         }
 
         public async void MoveSelectionDown()
         {
             _currentChannelList.MoveSelectionDown(null);
-            IsLogoVisible = true;
+            await BlinkChannelTitle();
+        }
+
+
+        private async Task BlinkChannelTitle()
+        {
+            IsChannelTitleVisible = true;
             await Task.Delay(2000);
-            IsLogoVisible = false;
+            IsChannelTitleVisible = false;
         }
     }
   
